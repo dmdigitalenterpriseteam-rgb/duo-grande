@@ -1,0 +1,5054 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DUO GRANDE — Hero corrected</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      background: #0f0d0b;
+      isolation: isolate;
+    }
+
+    /* Poster se prikazuje ceo, centriran u okviru prvog ekrana, bez sečenja */
+    .hero-bg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      position: relative;
+      z-index: 0;
+      margin: 0 auto;
+    }
+
+    /* Diskretan gornji gradient bez blur-a */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 17%;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(28, 18, 12, 0.28) 0%,
+        rgba(28, 18, 12, 0.13) 42%,
+        rgba(28, 18, 12, 0.03) 74%,
+        rgba(28, 18, 12, 0.00) 100%
+      );
+    }
+
+    .topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 26px 42px 0;
+      z-index: 10;
+    }
+
+    .menu-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 38px;
+      padding-top: 10px;
+      padding-left: 150px;
+      flex-wrap: wrap;
+    }
+
+    .nav-item {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 19px;
+      letter-spacing: 1.05px;
+      font-weight: 500;
+      text-transform: uppercase;
+      line-height: 1;
+      padding-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(0,0,0,.18);
+    }
+
+    .nav-link::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background: linear-gradient(90deg, #c99f3f, #e4bf68, #b8862e);
+      border-radius: 999px;
+      margin-top: 9px;
+      opacity: .95;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: calc(50% + 38px);
+      transform: translateX(-50%);
+      min-width: 420px;
+      padding: 14px 0;
+      background: rgba(26, 20, 16, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      opacity: 0;
+      visibility: hidden;
+      transition: .22s ease;
+      z-index: 40;
+    }
+
+    .nav-item:hover .dropdown,
+    .nav-item:focus-within .dropdown {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 12px 20px;
+      color: rgba(255,255,255,.94);
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.35;
+      transition: background .18s ease, color .18s ease, padding-left .18s ease;
+    }
+
+    .dropdown a:hover {
+      background: rgba(216, 177, 90, .10);
+      color: #f2d28d;
+      padding-left: 26px;
+    }
+
+    .logo {
+      position: absolute;
+      top: 16px;
+      left: 30px;
+      width: 119px;
+      height: auto;
+      z-index: 20;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,.28));
+    }
+
+    .hero-content {
+      position: absolute;
+      left: calc(50% + 76px);
+      top: 6.0%;
+      transform: translateX(-50%);
+      width: min(1220px, 92vw);
+      text-align: center;
+      z-index: 15;
+      padding: 0 18px;
+      max-width: 100%;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(900px, 68vw);
+      height: 42px;
+      border-radius: 999px;
+      background: linear-gradient(
+        to right,
+        rgba(34, 22, 16, 0.00) 0%,
+        rgba(34, 22, 16, 0.05) 20%,
+        rgba(34, 22, 16, 0.10) 40%,
+        rgba(34, 22, 16, 0.10) 60%,
+        rgba(34, 22, 16, 0.05) 80%,
+        rgba(34, 22, 16, 0.00) 100%
+      );
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(6px);
+    }
+
+
+    .hero h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(24px, 2.1vw, 34px);
+      line-height: 1.04;
+      font-weight: 500;
+      font-style: italic;
+      color: #f6eadf;
+      text-shadow:
+        0 1px 0 rgba(255,255,255,.05),
+        0 2px 8px rgba(0,0,0,.14);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+
+    .social-rail {
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 25;
+    }
+
+    .social-rail a {
+      width: 53px;
+      height: 53px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #fff7ea;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 18%, rgba(255,255,255,0.00) 38%),
+        linear-gradient(135deg, rgba(62, 40, 24, 0.92) 0%, rgba(116, 80, 40, 0.90) 48%, rgba(191, 146, 74, 0.92) 100%);
+      border: 1px solid rgba(244, 208, 140, 0.82);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.24),
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -6px 14px rgba(0,0,0,.12);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .social-rail a:hover {
+      transform: translateX(3px) scale(1.04);
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -6px 14px rgba(0,0,0,.14);
+      filter: saturate(1.08) brightness(1.04);
+    }
+
+    .social-rail svg {
+      width: 23px;
+      height: 23px;
+      fill: currentColor;
+      display: block;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,.18));
+    }
+
+
+    .whatsapp-fab {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #ffffff;
+      z-index: 60;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 18%, rgba(255,255,255,0.00) 38%),
+        linear-gradient(135deg, rgba(17, 166, 77, 0.98) 0%, rgba(30, 191, 95, 0.98) 52%, rgba(7, 128, 56, 0.98) 100%);
+      border: 1px solid rgba(255,255,255,0.24);
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -8px 18px rgba(0,0,0,.12);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .whatsapp-fab:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow:
+        0 18px 34px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.24),
+        inset 0 -8px 18px rgba(0,0,0,.14);
+      filter: saturate(1.06) brightness(1.03);
+    }
+
+    .whatsapp-fab svg {
+      width: 30px;
+      height: 30px;
+      fill: currentColor;
+      display: block;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,.18));
+    }
+
+    @media (max-width: 1180px) {
+      .hero-bg {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+      .menu-wrap {
+        gap: 26px;
+        padding-left: 126px;
+      }
+      .nav-link { font-size: 18px; }
+      .logo { width: 112px; }
+      .dropdown { min-width: 360px; }
+      .hero-content {
+        top: 12.4%;
+        width: min(1220px, 96vw);
+        left: calc(50% + 42px);
+      }
+
+      .social-rail {
+        left: 16px;
+        right: auto;
+        gap: 12px;
+      }
+
+      .whatsapp-fab {
+        right: 18px;
+        bottom: 18px;
+        width: 58px;
+        height: 58px;
+      }
+
+      .whatsapp-fab svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .social-rail a {
+        width: 50px;
+        height: 50px;
+      }
+
+      .hero-content::before {
+        width: min(980px, 88vw);
+        height: 62px;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .hero-bg {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: none;
+      }
+      .topbar {
+        padding: 16px 18px 0;
+      }
+
+      .social-rail {
+        left: 14px;
+        right: auto;
+        top: auto;
+        bottom: 18px;
+        transform: none;
+        flex-direction: row;
+      }
+
+      .whatsapp-fab {
+        right: 14px;
+        bottom: 14px;
+        width: 54px;
+        height: 54px;
+      }
+
+      .whatsapp-fab svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      .social-rail a {
+        width: 44px;
+        height: 44px;
+      }
+
+      .social-rail svg {
+        width: 18px;
+        height: 18px;
+      }
+      .menu-wrap {
+        justify-content: center;
+        padding-left: 0;
+        gap: 14px 18px;
+        margin-top: 78px;
+      }
+      .nav-link { font-size: 14px; }
+      .logo {
+        top: 14px;
+        left: 14px;
+        width: 84px;
+      }
+      .dropdown {
+        left: 0;
+        transform: none;
+        min-width: 300px;
+      }
+      .hero::before {
+        height: 30%;
+      }
+      .hero-content {
+        top: 11.2%;
+        width: min(92vw, 860px);
+        left: calc(50% + 18px);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .menu-wrap {
+        gap: 12px 16px;
+        margin-top: 78px;
+      }
+      .nav-link {
+        font-size: 13px;
+      }
+      .nav-link::after {
+        height: 2px;
+        margin-top: 6px;
+      }
+      .dropdown { min-width: 270px; }
+      .hero::before {
+        height: 36%;
+      }
+      .hero-content {
+        top: 16.0%;
+        width: min(94vw, 760px);
+        left: 50%;
+      }
+
+      .hero-content::before {
+        width: min(86vw, 460px);
+        height: 34px;
+      }
+      .hero h1 {
+        font-size: clamp(18px, 4.1vw, 24px);
+        font-weight: 500;
+        white-space: normal;
+      }
+    }
+  
+
+    .about-section {
+      position: relative;
+      z-index: 40;
+      isolation: isolate;
+      background: linear-gradient(180deg, #241810 0%, #1a120c 100%);
+      color: #f7ecdf;
+      padding: 106px 0 78px;
+      margin-top: 0;
+      box-shadow: 0 -1px 0 rgba(87, 60, 34, .08);
+    }
+
+    .about-wrap {
+      width: min(1240px, 92vw);
+      margin: 0 auto;
+    }
+
+    .section-kicker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .section-kicker h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 2.4vw, 42px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: #f8f1e7;
+      text-shadow: 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .section-kicker .line {
+      width: 120px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #b98b43, #ead39f, #b98b43);
+      opacity: .95;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.04fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .about-photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      background: rgba(255,255,255,.28);
+      border: 1px solid rgba(106, 74, 42, .14);
+      box-shadow:
+        0 24px 54px rgba(72, 49, 28, .16),
+        inset 0 1px 0 rgba(255,255,255,.28);
+      padding: 14px;
+    }
+
+    .about-photo-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 22px;
+    }
+
+    .about-copy {
+      padding-right: 8px;
+    }
+
+    .about-copy p {
+      margin: 0 0 18px;
+      font-size: clamp(18px, 1.18vw, 23px);
+      line-height: 1.72;
+      color: rgba(247,236,223,.90);
+      letter-spacing: -0.01em;
+    }
+
+    .about-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-logos {
+      margin-top: 46px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .about-logo-card {
+      min-width: 232px;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border: 1px solid rgba(231, 199, 136, .14);
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      padding: 18px 24px;
+    }
+
+    .about-logo-card img {
+      max-width: 220px;
+      max-height: 110px;
+      width: auto;
+      height: auto;
+      display: block;
+    }
+
+    .about-separator {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(247,236,223,.72);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 980px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
+      .about-copy {
+        padding-right: 0;
+      }
+
+      .about-copy p {
+        font-size: clamp(17px, 2.2vw, 21px);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .about-section {
+        padding: 76px 0 58px;
+        margin-top: 0;
+      }
+
+      .about-logo-card {
+        min-width: 100%;
+        min-height: 120px;
+      }
+
+      .about-logo-card img {
+        max-width: 180px;
+        max-height: 90px;
+      }
+
+      .about-separator {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+
+    .services-section {
+      position: relative;
+      z-index: 40;
+      background: linear-gradient(180deg, #241810 0%, #1a120c 100%);
+      color: #f7ecdf;
+      padding: 108px 0 86px;
+      overflow: hidden;
+    }
+
+    .services-wrap {
+      width: min(1240px, 92vw);
+      margin: 0 auto;
+    }
+
+    .services-kicker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      margin-bottom: 54px;
+    }
+
+    .services-kicker h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 2.4vw, 42px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: #f8f1e7;
+      text-shadow: 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .services-kicker p {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(16px, 1.04vw, 18px);
+      line-height: 1.7;
+      color: rgba(247,236,223,.82);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .service-visual,
+    .service-copy-card {
+      border-radius: 30px;
+      overflow: hidden;
+      border: 1px solid rgba(231, 199, 136, .16);
+      box-shadow:
+        0 24px 60px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      min-height: 100%;
+    }
+
+    .service-visual {
+      position: relative;
+      background:
+        linear-gradient(135deg, rgba(77, 53, 34, 0.44), rgba(25, 17, 11, 0.18)),
+        url('images/hero/hero.jpg');
+      background-size: cover;
+      background-position: center;
+      min-height: 540px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .service-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(17,11,7,.82) 0%, rgba(17,11,7,.38) 38%, rgba(17,11,7,.08) 100%);
+    }
+
+    .service-badge {
+      position: relative;
+      z-index: 2;
+      margin: 0 28px 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(24, 16, 11, .72);
+      border: 1px solid rgba(232, 199, 133, .24);
+      color: #f2dcc0;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .service-copy-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      padding: 40px 44px 40px;
+    }
+
+    .service-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      color: #fff8ee;
+      font-size: 18px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+      margin-bottom: 22px;
+    }
+
+    .service-copy-card h3 {
+      margin: 0 0 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 2.2vw, 38px);
+      line-height: 1.08;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .service-copy-card p {
+      margin: 0 0 16px;
+      font-size: clamp(17px, 1.02vw, 19px);
+      line-height: 1.78;
+      color: rgba(248, 239, 229, .90);
+    }
+
+    .service-points {
+      list-style: none;
+      padding: 8px 0 0;
+      margin: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .service-points li {
+      position: relative;
+      padding-left: 28px;
+      font-size: 16px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.92);
+    }
+
+    .service-points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.14);
+      transform: translateY(-50%);
+    }
+
+    .service-note {
+      margin-top: 26px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(247,236,223,.78);
+    }
+
+    @media (max-width: 980px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-visual {
+        min-height: 380px;
+      }
+    }
+
+    
+    .subservice-block {
+      margin-top: 44px;
+      padding-top: 34px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .subservice-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .subservice-header h4 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(24px, 1.9vw, 32px);
+      line-height: 1.1;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .subservice-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(231, 199, 136, .14);
+      color: rgba(247,236,223,.80);
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .subservice-intro {
+      margin: 0 0 22px;
+      font-size: clamp(16px, 1.02vw, 18px);
+      line-height: 1.82;
+      color: rgba(248, 239, 229, .90);
+    }
+
+    .machine-info-card {
+      margin: 22px 0 28px;
+      padding: 26px 28px;
+      border-radius: 26px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .machine-info-card h5 {
+      margin: 0 0 14px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(21px, 1.45vw, 26px);
+      line-height: 1.1;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .machine-info-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .machine-info-list li {
+      position: relative;
+      padding-left: 28px;
+      font-size: clamp(16px, 1vw, 18px);
+      line-height: 1.72;
+      color: rgba(247,236,223,.90);
+    }
+
+    .machine-info-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .75em;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.12);
+      transform: translateY(-50%);
+    }
+
+    .biesse-badge {
+      margin-top: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 164px;
+      padding: 14px 24px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      color: #25252c;
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: .02em;
+      box-shadow:
+        0 12px 26px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.55);
+    }
+
+    .cutting-process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    .cutting-step {
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      padding: 22px 20px;
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .cutting-step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      color: #fff8ee;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .cutting-step h5 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.2;
+      color: #fff4e8;
+    }
+
+    .cutting-step p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.72;
+      color: rgba(247,236,223,.84);
+    }
+
+    .service-mini-note {
+      margin-top: 22px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(247,236,223,.84);
+    }
+
+    .service-mini-note strong {
+      color: #fff4e8;
+    }
+
+    .service-quote {
+      margin-top: 20px;
+      padding: 18px 22px;
+      border-left: 3px solid rgba(231, 199, 136, .36);
+      background: rgba(255,255,255,.04);
+      border-radius: 0 20px 20px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(20px, 1.35vw, 24px);
+      line-height: 1.45;
+      font-style: italic;
+      color: #f6eadf;
+    }
+
+    
+    .machine-gallery {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .machine-shot {
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .machine-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: rgba(0,0,0,.18);
+    }
+
+    .machine-shot figcaption {
+      padding: 16px 18px 18px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.82);
+    }
+
+    .machine-shot strong {
+      color: #fff4e8;
+    }
+
+    
+    .featured-machine {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .featured-machine-visual,
+    .featured-machine-copy {
+      overflow: hidden;
+      border-radius: 26px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .featured-machine-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      min-height: 360px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,255,255,.08), rgba(255,255,255,0) 58%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    }
+
+    .featured-machine-visual img {
+      display: block;
+      width: 100%;
+      max-width: 660px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+
+    .featured-machine-copy {
+      padding: 26px 26px 24px;
+    }
+
+    .featured-machine-copy h5 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 1.5vw, 28px);
+      line-height: 1.12;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .featured-machine-copy p {
+      margin: 0 0 14px;
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(247,236,223,.86);
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 0;
+      padding: 4px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .feature-list li {
+      position: relative;
+      padding-left: 24px;
+      font-size: 15px;
+      line-height: 1.68;
+      color: rgba(247,236,223,.86);
+    }
+
+    .feature-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      transform: translateY(-50%);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.10);
+    }
+
+    @media (max-width: 980px) {
+      .featured-machine {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-machine-visual {
+        min-height: 280px;
+      }
+    }
+
+
+    @media (max-width: 760px) {
+      .machine-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    @media (max-width: 980px) {
+      .cutting-process-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    @media (max-width: 640px) {
+      .services-section {
+        padding: 78px 0 58px;
+      }
+
+      .service-copy-card {
+        padding: 30px 22px 28px;
+      }
+
+      .service-visual {
+        min-height: 300px;
+      }
+
+      .service-badge {
+        margin: 0 18px 18px;
+        font-size: 10px;
+        padding: 10px 14px;
+      }
+    }
+
+
+    .service-process {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .service-process-title,
+    .service-showcase h4,
+    .service-videos h4 {
+      margin: 0 0 20px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 1.5vw, 28px);
+      line-height: 1.2;
+      font-weight: 500;
+      color: #fff1df;
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 18px 0;
+      border-top: 1px solid rgba(231, 199, 136, .12);
+    }
+
+    .process-step:first-of-type {
+      border-top: 0;
+      padding-top: 8px;
+    }
+
+    .process-step-number {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      color: #fff8ee;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    }
+
+    .process-step h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.35;
+      color: #fff4e8;
+      font-weight: 600;
+    }
+
+    .process-step p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(248, 239, 229, .88);
+    }
+
+    .service-showcase {
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .showcase-layout {
+      position: relative;
+    }
+
+    .showcase-layout > input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+    }
+
+
+    .showcase-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .showcase-tabs input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .showcase-tab {
+      display: block;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(231, 199, 136, .12);
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .showcase-tab:hover {
+      transform: translateX(2px);
+      border-color: rgba(231, 199, 136, .30);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 12px 26px rgba(0,0,0,.14);
+    }
+
+    .showcase-tab strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+      line-height: 1.35;
+      color: #fff4e8;
+      font-weight: 600;
+    }
+
+    .showcase-tab span {
+      display: block;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.78);
+    }
+
+    #showcase-1:checked ~ .showcase-tabs label[for="showcase-1"],
+    #showcase-2:checked ~ .showcase-tabs label[for="showcase-2"],
+    #showcase-3:checked ~ .showcase-tabs label[for="showcase-3"],
+    #showcase-4:checked ~ .showcase-tabs label[for="showcase-4"] {
+      background: linear-gradient(180deg, rgba(217,181,109,.18), rgba(255,255,255,.05));
+      border-color: rgba(231, 199, 136, .42);
+      box-shadow:
+        0 16px 36px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.08);
+      transform: translateX(4px);
+    }
+
+    #showcase-1:checked ~ .showcase-tabs label[for="showcase-1"] strong,
+    #showcase-2:checked ~ .showcase-tabs label[for="showcase-2"] strong,
+    #showcase-3:checked ~ .showcase-tabs label[for="showcase-3"] strong,
+    #showcase-4:checked ~ .showcase-tabs label[for="showcase-4"] strong {
+      color: #fff9ef;
+    }
+
+    .showcase-stage {
+      position: relative;
+      min-height: 520px;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: rgba(255,255,255,.03);
+      box-shadow:
+        0 24px 54px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .showcase-item {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s ease;
+    }
+
+    .showcase-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      background: #1a120c;
+    }
+
+    .showcase-overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px 22px;
+      background: linear-gradient(to top, rgba(12,8,5,.82) 0%, rgba(12,8,5,.46) 56%, rgba(12,8,5,0) 100%);
+    }
+
+    .showcase-overlay strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 20px;
+      line-height: 1.25;
+      color: #fff7ee;
+      font-weight: 600;
+    }
+
+    .showcase-overlay span {
+      display: block;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.82);
+    }
+
+    #showcase-1:checked ~ .showcase-stage .item-1,
+    #showcase-2:checked ~ .showcase-stage .item-2,
+    #showcase-3:checked ~ .showcase-stage .item-3,
+    #showcase-4:checked ~ .showcase-stage .item-4 {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .service-videos {
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .video-card {
+      position: relative;
+      min-height: 230px;
+      padding: 26px 22px 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(231, 199, 136, .12);
+      overflow: hidden;
+    }
+
+    .video-card em {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-style: normal;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff4e8;
+    }
+
+    .video-card span {
+      display: block;
+      max-width: 90%;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.78);
+    }
+
+    .video-play {
+      width: 62px;
+      height: 62px;
+      margin-bottom: 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+      position: relative;
+    }
+
+    .video-play::before {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 18px;
+      border-left: 16px solid #fff8ee;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
+
+    @media (max-width: 980px) {
+      .showcase-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase-stage {
+        min-height: 420px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .process-step {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .service-copy-card {
+        padding: 30px 22px 28px;
+      }
+
+      .showcase-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .showcase-stage {
+        order: 1;
+        min-height: 240px;
+        border-radius: 22px;
+      }
+
+      .showcase-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .showcase-stage .showcase-item img {
+        height: 240px;
+        object-fit: cover;
+        flex: 0 0 auto;
+      }
+
+      .showcase-overlay {
+        position: static;
+        padding: 14px 16px 16px;
+        background: linear-gradient(180deg, rgba(26,18,12,.96), rgba(26,18,12,.88));
+        border-top: 1px solid rgba(231, 199, 136, .12);
+      }
+
+      .showcase-overlay strong {
+        font-size: 17px;
+      }
+
+      .showcase-overlay span {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .showcase-tabs {
+        order: 2;
+        gap: 10px;
+      }
+
+      .showcase-tab {
+        padding: 14px 16px;
+        border-radius: 18px;
+      }
+
+      .showcase-tab strong {
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+
+      .showcase-tab span {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    /* Mobile HERO refined: use dark area below photo for nav, socials and WhatsApp */
+    @media (max-width: 640px) {
+      .hero {
+        padding-bottom: 238px;
+        background: linear-gradient(180deg, #20130c 0%, #140c08 100%);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 238px;
+        height: 118px;
+        pointer-events: none;
+        z-index: 2;
+        background: linear-gradient(
+          to bottom,
+          rgba(20, 12, 8, 0.00) 0%,
+          rgba(20, 12, 8, 0.22) 28%,
+          rgba(20, 12, 8, 0.68) 72%,
+          rgba(20, 12, 8, 0.96) 100%
+        );
+      }
+
+      .hero-bg {
+        width: 100%;
+        height: auto;
+        margin: 0;
+      }
+
+      .topbar {
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 100%;
+        padding: 10px 12px 0;
+        z-index: 15;
+      }
+
+      .logo {
+        top: 12px;
+        left: 12px;
+        width: 62px;
+      }
+
+      .hero-content {
+        top: auto;
+        bottom: 194px;
+        left: 50%;
+        width: 78%;
+        transform: translateX(-50%);
+        padding: 0;
+        z-index: 18;
+      }
+
+      .hero-content::before {
+        width: 88%;
+        height: 30px;
+        filter: blur(6px);
+      }
+
+      .hero h1 {
+        font-size: clamp(12px, 3.6vw, 15px);
+        line-height: 1.16;
+        white-space: normal;
+      }
+
+      .menu-wrap {
+        position: absolute;
+        left: 50%;
+        bottom: 116px;
+        transform: translateX(-50%);
+        width: 90%;
+        margin-top: 0;
+        padding-left: 0;
+        justify-content: center;
+        gap: 10px 14px;
+        z-index: 18;
+      }
+
+      .nav-link {
+        font-size: 11px;
+        letter-spacing: 0.35px;
+        padding-bottom: 4px;
+      }
+
+      .nav-link::after {
+        margin-top: 4px;
+        height: 1px;
+      }
+
+      .dropdown {
+        display: none;
+      }
+
+      .social-rail {
+        position: absolute;
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: 30px;
+        transform: translateX(-50%);
+        flex-direction: row;
+        gap: 12px;
+        z-index: 18;
+      }
+
+      .social-rail a {
+        width: 42px;
+        height: 42px;
+      }
+
+      .social-rail svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .whatsapp-fab {
+        position: absolute;
+        right: 14px;
+        bottom: 30px;
+        width: 46px;
+        height: 46px;
+        z-index: 18;
+      }
+
+      .whatsapp-fab svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero {
+        padding-bottom: 228px;
+      }
+
+      .hero::after {
+        bottom: 228px;
+      }
+
+      .logo {
+        width: 58px;
+      }
+
+      .hero-content {
+        bottom: 188px;
+        left: 50%;
+        width: 80%;
+      }
+
+      .hero h1 {
+        font-size: 12px;
+      }
+
+      .menu-wrap {
+        bottom: 114px;
+        width: 92%;
+        gap: 8px 12px;
+      }
+
+      .nav-link {
+        font-size: 10px;
+        letter-spacing: 0.3px;
+      }
+
+      .social-rail {
+        bottom: 22px;
+      }
+
+      .social-rail a {
+        width: 40px;
+        height: 40px;
+      }
+
+      .whatsapp-fab {
+        width: 44px;
+        height: 44px;
+        right: 12px;
+        bottom: 22px;
+      }
+    }
+
+
+    .design3d-layout {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 24px;
+      margin-top: 24px;
+      align-items: stretch;
+    }
+
+    .design3d-copy-card,
+    .design3d-visual-card {
+      border-radius: 26px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .design3d-copy-card {
+      padding: 28px 28px 26px;
+    }
+
+    .design3d-copy-card p {
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.78;
+      color: rgba(247,236,223,.88);
+    }
+
+    .design3d-benefits {
+      list-style: none;
+      margin: 0;
+      padding: 6px 0 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .design3d-benefits li {
+      position: relative;
+      padding-left: 26px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(247,236,223,.90);
+    }
+
+    .design3d-benefits li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .75em;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.12);
+      transform: translateY(-50%);
+    }
+
+    .design3d-visual-card {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: minmax(250px, auto) minmax(120px, auto);
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .design3d-visual {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), rgba(255,255,255,0) 32%),
+        linear-gradient(135deg, rgba(72, 50, 32, .96), rgba(22, 15, 10, .96));
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      align-content: start;
+      box-shadow:
+        0 12px 24px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .design3d-visual > img {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      object-fit: cover;
+      display: block;
+      z-index: 0;
+    }
+
+    .design3d-visual.main {
+      grid-column: 1 / span 2;
+    }
+
+    .design3d-visual::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      z-index: 1;
+      border-radius: 16px;
+      border: 1px solid rgba(242, 220, 192, .10);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)),
+        repeating-linear-gradient(
+          90deg,
+          rgba(234, 211, 159, .06) 0 1px,
+          rgba(0,0,0,0) 1px 34px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(234, 211, 159, .04) 0 1px,
+          rgba(0,0,0,0) 1px 34px
+        );
+      pointer-events: none;
+    }
+
+    .design3d-visual-label {
+      position: relative;
+      z-index: 2;
+      margin: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(19, 13, 9, .78);
+      border: 1px solid rgba(231, 199, 136, .14);
+      color: #f7ecdf;
+      font-size: 14px;
+      line-height: 1.45;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .design3d-visual-label strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #fff4e8;
+      font-size: 15px;
+    }
+
+    .design3d-process {
+      margin-top: 30px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .design3d-process-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .design3d-step {
+      border-radius: 22px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      padding: 20px 16px 18px;
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .design3d-step-number {
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      color: #fff8ee;
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .design3d-step h5 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #fff4e8;
+    }
+
+    .design3d-step p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.82);
+    }
+
+    .design3d-closing {
+      margin-top: 22px;
+      padding: 18px 22px;
+      border-left: 3px solid rgba(231, 199, 136, .36);
+      background: rgba(255,255,255,.04);
+      border-radius: 0 20px 20px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(20px, 1.3vw, 24px);
+      line-height: 1.45;
+      font-style: italic;
+      color: #f6eadf;
+    }
+
+
+    .interior-section-shell {
+      margin-top: 0;
+      border-top: 1px solid rgba(231, 199, 136, .10);
+    }
+
+    .interior-intro-grid {
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      gap: 24px;
+      align-items: stretch;
+      margin-top: 22px;
+    }
+
+    .interior-copy-card,
+    .interior-highlights-card,
+    .interior-cta-card {
+      border-radius: 26px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .interior-copy-card {
+      padding: 30px 30px 28px;
+    }
+
+    .interior-copy-card p {
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(247,236,223,.90);
+    }
+
+    .interior-copy-card p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .interior-benefits {
+      list-style: none;
+      margin: 22px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .interior-benefits li {
+      position: relative;
+      padding-left: 28px;
+      font-size: 15px;
+      line-height: 1.72;
+      color: rgba(247,236,223,.90);
+    }
+
+    .interior-benefits li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .75em;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.12);
+      transform: translateY(-50%);
+    }
+
+    .interior-highlights-card {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .interior-highlight {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background:
+        radial-gradient(circle at top right, rgba(241,221,176,.16), rgba(241,221,176,0) 34%),
+        linear-gradient(135deg, rgba(78, 54, 34, .96), rgba(23, 16, 11, .96));
+      box-shadow:
+        0 12px 24px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .interior-highlight > img {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      z-index: 0;
+    }
+
+    .interior-highlight::before {
+      content: "";
+      position: absolute;
+      inset: 14px 14px auto 14px;
+      height: 192px;
+      border-radius: 16px;
+      border: 1px solid rgba(242, 220, 192, .10);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .interior-highlight-text {
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      z-index: 3;
+      margin: 0;
+      padding: 16px 18px 18px;
+      background: linear-gradient(180deg, rgba(34, 22, 16, .92), rgba(24, 16, 11, .96));
+      border-top: 1px solid rgba(231, 199, 136, .10);
+    }
+
+    .interior-highlight strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+      line-height: 1.3;
+      color: #fff4e8;
+    }
+
+    .interior-highlight span {
+      display: block;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.86);
+    }
+
+    .interior-cta-card {
+      margin-top: 22px;
+      padding: 24px 26px;
+    }
+
+    .interior-cta-card h5 {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 1.45vw, 28px);
+      line-height: 1.2;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .interior-cta-card p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.72;
+      color: rgba(247,236,223,.84);
+    }
+
+    .interior-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #fff8ee;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+
+
+
+    .interior-video-card {
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.16),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .interior-video-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #140d09;
+    }
+
+    .interior-video-frame video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #140d09;
+    }
+
+    .interior-video-caption {
+      padding: 14px 16px 16px;
+      border-top: 1px solid rgba(231, 199, 136, .10);
+      background: linear-gradient(180deg, rgba(34, 22, 16, .92), rgba(24, 16, 11, .96));
+    }
+
+    .interior-video-caption strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #fff4e8;
+    }
+
+    .interior-video-caption span {
+      display: block;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(247,236,223,.82);
+    }
+
+    .interior-closing {
+      margin-top: 22px;
+      padding: 18px 22px;
+      border-left: 3px solid rgba(231, 199, 136, .36);
+      background: rgba(255,255,255,.04);
+      border-radius: 0 20px 20px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(20px, 1.3vw, 24px);
+      line-height: 1.45;
+      font-style: italic;
+      color: #f6eadf;
+    }
+
+    @media (max-width: 980px) {
+      .interior-intro-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .interior-copy-card,
+      .interior-cta-card {
+        padding: 24px 20px 22px;
+      }
+
+      .interior-highlights-card {
+        padding: 14px;
+      }
+
+      .interior-highlight > img {
+        height: 170px;
+      }
+
+      .interior-highlight::before {
+        inset: 12px 12px auto 12px;
+        height: 146px;
+      }
+
+      .interior-highlight-text {
+        padding: 14px 16px 16px;
+      }
+
+      .interior-highlight strong {
+        font-size: 17px;
+      }
+
+      .interior-highlight span {
+        font-size: 13px;
+        line-height: 1.58;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .design3d-process-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 980px) {
+      .design3d-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .design3d-process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .design3d-copy-card {
+        padding: 24px 20px 22px;
+      }
+
+      .design3d-visual-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .design3d-visual {
+        min-height: 0;
+        display: block;
+      }
+
+      .design3d-visual.main {
+        grid-column: auto;
+      }
+
+      .design3d-visual.main > img {
+        position: relative;
+        height: 170px;
+      }
+
+      .design3d-visual:not(.main) > img {
+        position: relative;
+        height: 88px;
+      }
+
+      .design3d-visual::before {
+        inset: 10px;
+        border-radius: 14px;
+      }
+
+      .design3d-visual-label {
+        margin: 10px;
+        padding: 11px 12px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .design3d-visual-label strong {
+        font-size: 14px;
+      }
+
+      .design3d-process-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .design3d-closing {
+        font-size: 20px;
+      }
+    }
+
+
+
+    .products-section {
+      position: relative;
+      z-index: 40;
+      background: linear-gradient(180deg, #241810 0%, #1a120c 100%);
+      color: #f7ecdf;
+      padding: 106px 0 78px;
+      border-top: 1px solid rgba(231, 199, 136, .10);
+    }
+
+    .products-wrap {
+      width: min(1240px, 92vw);
+      margin: 0 auto;
+    }
+
+    .products-intro {
+      max-width: 860px;
+      margin: 0 auto 48px;
+      text-align: center;
+      font-size: clamp(16px, 1.02vw, 18px);
+      line-height: 1.8;
+      color: rgba(247,236,223,.84);
+    }
+
+    .product-main-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .product-main-card {
+      border-radius: 28px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      padding: 30px 28px 28px;
+    }
+
+    .product-main-card h3 {
+      margin: 0 0 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(26px, 2vw, 34px);
+      line-height: 1.12;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .product-main-card p {
+      margin: 0 0 22px;
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(247,236,223,.84);
+    }
+
+    .product-sub-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .product-sub-item {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 14px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      color: #f6eadf;
+      font-size: 15px;
+      line-height: 1.45;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      box-shadow:
+        0 10px 22px rgba(0,0,0,.12),
+        inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    @media (max-width: 980px) {
+      .products-section {
+        padding: 86px 0 66px;
+      }
+
+      .product-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .products-section {
+        padding: 76px 0 58px;
+      }
+
+      .product-main-card {
+        padding: 24px 20px 22px;
+        border-radius: 24px;
+      }
+
+      .product-main-card h3 {
+        font-size: clamp(22px, 6vw, 28px);
+      }
+
+      .product-sub-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .product-sub-item {
+        min-height: 66px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+    }
+
+
+    .product-gallery-block {
+      margin-top: 44px;
+      padding-top: 34px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .product-gallery-header {
+      max-width: 880px;
+      margin: 0 auto 26px;
+      text-align: center;
+    }
+
+    .product-gallery-header h3 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(26px, 2vw, 36px);
+      line-height: 1.12;
+      font-weight: 500;
+      letter-spacing: .06em;
+      color: #fff4e8;
+      text-transform: uppercase;
+    }
+
+    .product-gallery-header p {
+      margin: 0;
+      font-size: clamp(15px, 1vw, 17px);
+      line-height: 1.72;
+      color: rgba(247,236,223,.82);
+    }
+
+    .product-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .product-gallery-card {
+      display: block;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      text-decoration: none;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .product-gallery-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(231, 199, 136, .34);
+      box-shadow:
+        0 22px 44px rgba(0,0,0,.24),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .product-gallery-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .product-gallery-caption {
+      min-height: 82px;
+      padding: 14px 16px 16px;
+      border-top: 1px solid rgba(231, 199, 136, .10);
+      background: linear-gradient(180deg, rgba(34, 22, 16, .92), rgba(24, 16, 11, .96));
+      color: #f7ecdf;
+    }
+
+    .product-gallery-caption strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #fff4e8;
+      font-weight: 600;
+    }
+
+    .product-gallery-caption span {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(247,236,223,.72);
+    }
+
+    .product-sub-item.product-sub-link {
+      text-decoration: none;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .product-sub-item.product-sub-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(231, 199, 136, .34);
+      background: linear-gradient(180deg, rgba(217,181,109,.14), rgba(255,255,255,.03));
+    }
+
+    @media (max-width: 980px) {
+      .product-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .product-gallery-block {
+        margin-top: 34px;
+        padding-top: 28px;
+      }
+
+      .product-gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .product-gallery-card {
+        border-radius: 20px;
+      }
+
+      .product-gallery-card img {
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+
+    .materials-section-shell {
+      padding: 96px 0 78px;
+      margin-top: 46px;
+      padding-top: 34px;
+      border-top: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .materials-kicker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .materials-kicker h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 2.1vw, 38px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: #f8f1e7;
+      text-shadow: 0 1px 0 rgba(255,255,255,.08);
+      text-transform: uppercase;
+    }
+
+    .materials-kicker .line {
+      width: 120px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #b98b43, #ead39f, #b98b43);
+      opacity: .95;
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .brand-card {
+      min-height: 110px;
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 20px;
+    }
+
+    .brand-card img {
+      display: block;
+      max-width: 86%;
+      max-height: 52px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.16));
+    }
+
+    .brand-board {
+      margin: 0 auto 30px;
+      max-width: 1120px;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    
+    .brand-text-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin: 0 auto 30px;
+      max-width: 1120px;
+    }
+
+    .brand-text-card {
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 18px 20px;
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      color: #f6eadf;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 1.9vw, 32px);
+      letter-spacing: 0.08em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      text-shadow: 0 1px 0 rgba(255,255,255,.04);
+    }
+
+
+
+    .materials-copy-card {
+      border-radius: 28px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 18px 38px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      padding: 34px 34px 30px;
+    }
+
+    .materials-copy-card p {
+      margin: 0 0 18px;
+      font-size: clamp(17px, 1.02vw, 19px);
+      line-height: 1.82;
+      color: rgba(248, 239, 229, .90);
+    }
+
+    .materials-copy-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .materials-gallery {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .materials-shot {
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .materials-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: rgba(0,0,0,.18);
+    }
+
+    .materials-shot figcaption {
+      padding: 16px 18px 18px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(247,236,223,.82);
+    }
+
+    .materials-shot strong {
+      color: #fff4e8;
+    }
+
+    @media (max-width: 980px) {
+      .brand-text-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .brand-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .materials-section-shell {
+        padding: 76px 0 58px;
+      }
+
+      .materials-copy-card {
+        padding: 26px 20px 22px;
+      }
+
+      .brand-grid,
+      .materials-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-card {
+        min-height: 96px;
+      }
+
+      .brand-card img {
+        max-height: 42px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand-text-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+
+      .brand-text-card {
+        min-height: 78px;
+        border-radius: 20px;
+        font-size: clamp(18px, 6vw, 24px);
+        letter-spacing: 0.06em;
+      }
+    }
+
+    .turnkey-grid {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 24px;
+      margin-top: 24px;
+      align-items: stretch;
+    }
+
+    .turnkey-copy-card,
+    .turnkey-side-card,
+    .turnkey-video-block {
+      border-radius: 26px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .turnkey-copy-card {
+      padding: 28px 28px 26px;
+    }
+
+    .turnkey-copy-card p {
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.78;
+      color: rgba(247,236,223,.88);
+    }
+
+    .turnkey-copy-card p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .turnkey-feature-list {
+      list-style: none;
+      margin: 0;
+      padding: 8px 0 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .turnkey-feature-list li {
+      position: relative;
+      padding-left: 28px;
+      font-size: 15px;
+      line-height: 1.72;
+      color: rgba(247,236,223,.92);
+    }
+
+    .turnkey-feature-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .74em;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.12);
+      transform: translateY(-50%);
+    }
+
+    .turnkey-side-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .turnkey-side-card {
+      padding: 22px 22px 20px;
+      min-height: 152px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .turnkey-side-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(242, 220, 192, .08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)),
+        radial-gradient(circle at 85% 18%, rgba(217,181,109,.16), rgba(217,181,109,0) 34%);
+      pointer-events: none;
+    }
+
+    .turnkey-side-card strong,
+    .turnkey-side-card span {
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .turnkey-side-card strong {
+      margin-bottom: 8px;
+      font-size: 22px;
+      line-height: 1.2;
+      color: #fff4e8;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+    }
+
+    .turnkey-side-card span {
+      font-size: 15px;
+      line-height: 1.68;
+      color: rgba(247,236,223,.82);
+      max-width: 92%;
+    }
+
+    .turnkey-video-block {
+      margin-top: 30px;
+      padding: 24px;
+    }
+
+    .turnkey-video-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .turnkey-video-head h5 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(24px, 1.8vw, 32px);
+      line-height: 1.12;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .turnkey-video-head p {
+      margin: 0;
+      max-width: 760px;
+      font-size: 15px;
+      line-height: 1.72;
+      color: rgba(247,236,223,.80);
+    }
+
+    .turnkey-video-frame {
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(231, 199, 136, .14);
+      background: rgba(14, 9, 6, .52);
+      box-shadow:
+        0 16px 34px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .turnkey-video-frame video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      background: #120c09;
+    }
+
+    .turnkey-video-note {
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.68;
+      color: rgba(247,236,223,.74);
+    }
+
+    .turnkey-closing {
+      margin-top: 22px;
+      padding: 18px 22px;
+      border-left: 3px solid rgba(231, 199, 136, .36);
+      background: rgba(255,255,255,.04);
+      border-radius: 0 20px 20px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(20px, 1.3vw, 24px);
+      line-height: 1.45;
+      font-style: italic;
+      color: #f6eadf;
+    }
+
+    @media (max-width: 980px) {
+      .turnkey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .turnkey-copy-card,
+      .turnkey-video-block {
+        padding: 24px 20px 22px;
+      }
+
+      .turnkey-side-card {
+        min-height: 0;
+        padding: 18px 18px 16px;
+      }
+
+      .turnkey-side-card strong {
+        font-size: 19px;
+      }
+
+      .turnkey-side-card span,
+      .turnkey-video-head p,
+      .turnkey-video-note {
+        font-size: 14px;
+      }
+    }
+
+  
+    @media (max-width: 640px) {
+      .turnkey-video-frame {
+        max-width: 100%;
+      }
+    }
+
+    /* Premium KONTAKT section */
+    .contact-section {
+      position: relative;
+      z-index: 40;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(231, 199, 136, .14), rgba(231, 199, 136, 0) 34%),
+        linear-gradient(180deg, #241810 0%, #160f0a 100%);
+      color: #f7ecdf;
+      padding: 108px 0 76px;
+      border-top: 1px solid rgba(231, 199, 136, .12);
+    }
+
+    .contact-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 56px),
+        linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 56px);
+      mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    }
+
+    .contact-wrap {
+      position: relative;
+      width: min(1240px, 92vw);
+      margin: 0 auto;
+    }
+
+    .contact-hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 26px;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .contact-card,
+    .career-card,
+    .location-card,
+    .contact-footer-card {
+      border-radius: 30px;
+      border: 1px solid rgba(231, 199, 136, .18);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.035));
+      box-shadow:
+        0 24px 60px rgba(0,0,0,.24),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .contact-card {
+      padding: 36px 36px 34px;
+      min-height: 100%;
+    }
+
+    .contact-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: #f3d79a;
+      background: rgba(231, 199, 136, .08);
+      border: 1px solid rgba(231, 199, 136, .16);
+      font-size: 13px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .contact-card h2,
+    .career-card h3,
+    .locations-header h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      color: #fff4e8;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .contact-card h2 {
+      font-size: clamp(34px, 3.2vw, 56px);
+      line-height: 1.02;
+      margin-bottom: 18px;
+    }
+
+    .contact-card p {
+      margin: 0 0 18px;
+      max-width: 760px;
+      color: rgba(247,236,223,.88);
+      font-size: clamp(17px, 1.08vw, 20px);
+      line-height: 1.75;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .premium-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #fff8ee;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #8d6330, #d3a85a, #7b5528);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.18);
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    .premium-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04) saturate(1.04);
+    }
+
+    .premium-btn.secondary {
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(231, 199, 136, .24);
+      color: #f6dfad;
+    }
+
+    .contact-info-panel {
+      padding: 26px;
+      display: grid;
+      gap: 16px;
+      align-content: stretch;
+    }
+
+    .info-tile {
+      border-radius: 24px;
+      padding: 22px 22px;
+      background:
+        radial-gradient(circle at top right, rgba(231, 199, 136, .13), rgba(231, 199, 136, 0) 44%),
+        rgba(19, 13, 9, .56);
+      border: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .info-tile strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #f1d08b;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      font-weight: 500;
+    }
+
+    .info-tile a,
+    .info-tile span {
+      display: block;
+      color: rgba(247,236,223,.90);
+      text-decoration: none;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .info-tile a:hover {
+      color: #f1d08b;
+    }
+
+    .career-card {
+      margin-top: 28px;
+      padding: 34px 34px 30px;
+    }
+
+    .career-card h3,
+    .locations-header h3 {
+      font-size: clamp(28px, 2.35vw, 42px);
+      line-height: 1.12;
+      margin-bottom: 14px;
+    }
+
+    .career-card > p,
+    .locations-header p {
+      margin: 0;
+      color: rgba(247,236,223,.84);
+      font-size: clamp(16px, 1vw, 18px);
+      line-height: 1.75;
+    }
+
+    .cv-grid {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 22px;
+      margin-top: 26px;
+      align-items: start;
+    }
+
+    .cv-highlight {
+      min-height: 100%;
+      padding: 26px;
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(154,112,56,.22), rgba(255,255,255,.04));
+      border: 1px solid rgba(231, 199, 136, .18);
+    }
+
+    .cv-highlight strong {
+      display: block;
+      margin-bottom: 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      color: #fff4e8;
+      font-size: clamp(22px, 1.55vw, 28px);
+      font-weight: 500;
+    }
+
+    .cv-highlight p {
+      margin: 0 0 18px;
+      color: rgba(247,236,223,.84);
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .cv-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cv-list li {
+      position: relative;
+      padding: 13px 14px 13px 34px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(231, 199, 136, .10);
+      color: rgba(247,236,223,.90);
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .cv-list li::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 21px;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d9b56d, #f1ddb0);
+      box-shadow: 0 0 0 4px rgba(217,181,109,.10);
+    }
+
+    .locations-block {
+      margin-top: 28px;
+    }
+
+    .locations-header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .location-card {
+      overflow: hidden;
+    }
+
+    .map-frame {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      min-height: 260px;
+      background: #1a120c;
+      border-bottom: 1px solid rgba(231, 199, 136, .14);
+    }
+
+    .map-frame iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      filter: saturate(.92) contrast(.96);
+    }
+
+    .location-content {
+      padding: 24px 24px 26px;
+    }
+
+    .location-content h4 {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(24px, 1.7vw, 31px);
+      line-height: 1.15;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .location-content p {
+      margin: 0 0 15px;
+      color: rgba(247,236,223,.86);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .working-time {
+      display: grid;
+      gap: 7px;
+      margin: 16px 0 20px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(231, 199, 136, .10);
+      color: rgba(247,236,223,.88);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .contact-footer-card {
+      margin-top: 28px;
+      padding: 26px 28px;
+      display: grid;
+      grid-template-columns: 1.05fr .92fr .92fr 1.08fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .footer-info-group strong {
+      display: block;
+      color: #f1d08b;
+      margin-bottom: 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .footer-info-group span,
+    .footer-info-group a {
+      display: block;
+      color: rgba(247,236,223,.86);
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .footer-info-group a:hover {
+      color: #f1d08b;
+    }
+
+    .designer-credit {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 16px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(62, 168, 255, .16), rgba(62, 168, 255, 0) 42%),
+        rgba(255,255,255,.045);
+      border: 1px solid rgba(231, 199, 136, .13);
+    }
+
+    .designer-credit img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: #050505;
+      box-shadow: 0 10px 24px rgba(0,0,0,.24);
+      flex: 0 0 auto;
+    }
+
+    .designer-credit span {
+      display: block;
+      color: rgba(247,236,223,.72);
+      font-size: 13px;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .designer-credit a {
+      display: inline-block;
+      color: #f1d08b;
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .designer-credit a:hover {
+      color: #fff4e8;
+    }
+
+    @media (max-width: 980px) {
+      .contact-hero,
+      .cv-grid,
+      .location-grid,
+      .contact-footer-card {
+        grid-template-columns: 1fr;
+      }
+
+      .cv-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .contact-section {
+        padding: 78px 0 58px;
+      }
+
+      .contact-card,
+      .career-card,
+      .contact-info-panel,
+      .location-content,
+      .contact-footer-card {
+        padding: 24px 20px;
+      }
+
+      .contact-actions {
+        flex-direction: column;
+      }
+
+      .premium-btn {
+        width: 100%;
+      }
+
+      .map-frame {
+        min-height: 230px;
+      }
+    }
+
+</style>
+</head>
+<body>
+  <section class="hero">
+    <img class="hero-bg" src="images/hero/hero.jpg" alt="DUO GRANDE enterijer" />
+
+    <header class="topbar">
+      <nav class="menu-wrap" aria-label="Glavna navigacija">
+        <a class="nav-link" href="#o-nama">O NAMA</a>
+
+        <div class="nav-item">
+          <a class="nav-link" href="#usluge">USLUGE</a>
+          <div class="dropdown">
+            <a href="#izrada-po-meri">Izrada nameštaja po meri</a>
+            <a href="#montaza">Montaža</a>
+            <a href="#secenje-plocastog-materijala">Uslužno sečenje pločastog materijala</a>
+            <a href="#kantovanje">Uslužno kantovanje pločastog materijala</a>
+            <a href="#3d-dizajn">3D dizajn nameštaja po meri</a>
+            <a href="#dizajn-enterijera">Dizajn enterijera</a>
+            <a href="#kljuc-u-ruke">Sistem ključ u ruke</a>
+          </div>
+        </div>
+
+        <a class="nav-link" href="#materijali">MATERIJALI</a>
+        <a class="nav-link" href="#proizvodi">PROIZVODI</a>
+        <a class="nav-link" href="#katalozi">KATALOZI</a>
+        <a class="nav-link" href="#galerija">GALERIJA</a>
+        <a class="nav-link" href="#kontakt">KONTAKT</a>
+      </nav>
+
+      <img class="logo" src="images/logo/duo-grande-header-320.png" alt="DUO GRANDE logo" />
+    </header>
+
+
+    <div class="social-rail" aria-label="Društvene mreže">
+      <a href="https://www.facebook.com/share/1CmPzSCRWT/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.6 1.7-1.6H16.7V3.8c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.4V10H7.3v3H10v8h3.5z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/namestaj.nedeljkovic.duogrande?igsh=MWZkOG9tYjMyamtvMQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.5 1.6a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2A2.8 2.8 0 1 0 12 14.8 2.8 2.8 0 0 0 12 9.2z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/duo-grande-d-o-o-72b6b03a5/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5a1.72 1.72 0 1 1 0-3.44 1.72 1.72 0 0 1 0 3.44zM5.4 9.76h3.08V19.5H5.4V9.76zm5.02 0h2.95v1.33h.04c.41-.78 1.42-1.6 2.92-1.6 3.12 0 3.69 2.05 3.69 4.72v5.29h-3.08v-4.69c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48v4.77h-3.08V9.76z"/></svg>
+      </a>
+    </div>
+
+
+
+    <a class="whatsapp-fab" href="https://wa.me/381658522732" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.5 0 .16 5.34.16 11.91c0 2.1.55 4.15 1.6 5.95L0 24l6.32-1.66a11.84 11.84 0 0 0 5.75 1.47h.01c6.57 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.47-8.42zM12.08 21.8h-.01a9.86 9.86 0 0 1-5.02-1.37l-.36-.21-3.75.98 1-3.65-.23-.38a9.83 9.83 0 0 1-1.5-5.26C2.2 6.44 6.62 2.02 12.07 2.02c2.63 0 5.1 1.03 6.96 2.89a9.79 9.79 0 0 1 2.88 6.98c0 5.45-4.43 9.9-9.83 9.9zm5.4-7.37c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.16-.17.2-.35.22-.65.08-.3-.15-1.29-.47-2.45-1.5-.9-.8-1.5-1.79-1.67-2.08-.18-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.08 3.18 5.03 4.46.7.3 1.26.48 1.69.62.71.23 1.35.2 1.86.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+    </a>
+
+
+    <div class="hero-content">
+      <h1>Mesto gde se susreću moderan dizajn i tradicija</h1>
+    </div>
+  </section>
+
+  <section class="about-section" id="o-nama">
+    <div class="about-wrap">
+      <div class="section-kicker">
+        <h2>O NAMA</h2>
+        <div class="line" aria-hidden="true"></div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-photo-card">
+          <img src="images/about/Duo grande firma 1.png" alt="DUO GRANDE DOO - sedište i objekat firme" />
+        </div>
+
+        <div class="about-copy">
+          <p>DUO GRANDE DOO nastavlja priču nastalu pre više od 30 godina iz zanatske tradicije, iskustva i posvećenosti kvalitetnoj izradi nameštaja. Danas, uz saradnju sa SZSTR Nedeljković kao podizvođačem određenih radova u procesu izrade i montaže, razvijamo rešenja koja spajaju estetiku, funkcionalnost i dugotrajnost.</p>
+
+          <p>Naša filozofija zasniva se na preciznosti, pažljivo odabranim materijalima i odgovornom pristupu svakom projektu. Verujemo da nameštaj nije samo proizvod, već važan deo prostora u kojem ljudi žive i rade — zato stvaramo komade koji unose toplinu, udobnost i prepoznatljiv stil.</p>
+        </div>
+      </div>
+
+      <div class="about-logos">
+        <div class="about-logo-card">
+          <img src="images/logo/duo-grande-header-320.png" alt="DUO GRANDE DOO logo" />
+        </div>
+
+        <div class="about-separator">u saradnji sa</div>
+
+        <div class="about-logo-card">
+          <img src="images/logo/Logo _Nedeljkovic_pozadina.png" alt="SZSTR Nedeljković logo" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="services-section" id="usluge">
+    <div class="services-wrap">
+      <div class="services-kicker">
+        <h2>USLUGE</h2>
+        <div class="line" aria-hidden="true"></div>
+        <p>Svaki projekat započinjemo pažljivim razumevanjem prostora, potreba i stila, kako bismo ponudili rešenje koje je funkcionalno, estetski usklađeno i dugotrajno.</p>
+      </div>
+
+      <div class="services-grid" id="izrada-po-meri">
+        <div class="service-copy-card">
+          <div class="service-index">01</div>
+          <h3>Izrada nameštaja po meri</h3>
+
+          <p>Naš tim stručnjaka nudi izradu nameštaja po meri u potpunosti prilagođenu Vašem prostoru, potrebama i načinu života. Bilo da želite modernu kuhinju, elegantan plakar, udobnu garnituru ili komad nameštaja koji će postati prepoznatljiv detalj Vašeg poslovnog ili stambenog prostora, svaku ideju pretvaramo u pažljivo osmišljenu i kvalitetno izvedenu stvarnost.</p>
+
+          <p>Posebnu pažnju posvećujemo funkcionalnosti, estetici i dugotrajnosti, jer verujemo da nameštaj po meri mora da odgovori i svakodnevnim potrebama i vizuelnom identitetu prostora. Naš cilj nije samo da izradimo lep komad nameštaja, već da ponudimo rešenje koje će se savršeno uklopiti u Vaš enterijer i trajati godinama.</p>
+
+          <ul class="service-points">
+            <li>Rešenja potpuno prilagođena dimenzijama, nameni i karakteru prostora</li>
+            <li>Pažljiv izbor materijala, okova, dekora i završne obrade</li>
+            <li>Maksimalno iskorišćenje prostora uz vrhunsku funkcionalnost</li>
+            <li>Precizna izrada i montaža uz jasan dogovor kroz sve faze projekta</li>
+          </ul>
+
+          <div class="service-note">Od prve ideje do završne montaže vodimo Vas kroz ceo proces jasno, profesionalno i sa punom posvećenošću svakom detalju.</div>
+
+          <div class="service-process">
+            <h4 class="service-process-title">Proces izrade nameštaja po meri</h4>
+
+            <div class="process-step">
+              <div class="process-step-number">1</div>
+              <div>
+                <h4>Priprema osnovnih informacija</h4>
+                <p>Da bismo izračunali cenu željenog nameštaja po meri, potrebno je da pripremite okvirne dimenzije nameštaja (širinu, visinu i dubinu elemenata), kao i informaciju o tome da li postoje ugradni aparati. Poželjno je da dostavite i skicu nameštaja, kao i željeni materijal, okov i dekor. Ukoliko to nemate pripremljeno, možete posetiti naša prodajna mesta, gde ćete uz pomoć stručnih lica definisati skicu i odabrati odgovarajuće materijale za izradu.</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="process-step-number">2</div>
+              <div>
+                <h4>Izrada ponude i okvirnog plana</h4>
+                <p>Nakon što dobijemo kompletan uvid u Vaše zahteve, naš tim u najkraćem roku sastavlja i dostavlja ponudu sa okvirnom cenom i predviđenim datumom završetka radova. Kada prihvatite ponudu i uslove rada, dogovaramo prvi slobodan termin za izlazak na teren i precizno merenje kompletnog projekta.</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="process-step-number">3</div>
+              <div>
+                <h4>Precizno merenje na terenu</h4>
+                <p>Po zakazanom terminu stručna lica izlaze na teren, gde se vrši precizno merenje kompletnog projekta. Tom prilikom obavljaju se sve neophodne konsultacije i pripreme za uspešnu realizaciju. U specifičnim slučajevima može doći do korekcije cene projekta ukoliko otežani uslovi na terenu zahtevaju promenu prvobitnog plana izrade.</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="process-step-number">4</div>
+              <div>
+                <h4>Potvrda projekta i porudžbina</h4>
+                <p>Kada se utvrde tačne dimenzije, finalne skice, cena projekta i datum izrade, naš tim pokreće porudžbinu i pripremu za proizvodnju u pogonu.</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="process-step-number">5</div>
+              <div>
+                <h4>Proizvodnja nameštaja</h4>
+                <p>U proizvodnom pogonu vrši se sečenje, obrada i sklapanje svih komponenti Vašeg nameštaja, uz kontrolu kvaliteta tokom svake faze rada.</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="process-step-number">6</div>
+              <div>
+                <h4>Isporuka i montaža</h4>
+                <p>Po završetku proizvodnje sledi isporuka i montaža naručenog nameštaja, u skladu sa prethodno utvrđenim dogovorom i terminom realizacije.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="service-showcase">
+            <h4>Izložba radova</h4>
+
+            <div class="showcase-layout">
+              <input type="radio" name="showcase-slider" id="showcase-1" checked>
+              <input type="radio" name="showcase-slider" id="showcase-2">
+              <input type="radio" name="showcase-slider" id="showcase-3">
+              <input type="radio" name="showcase-slider" id="showcase-4">
+
+              <div class="showcase-tabs" aria-label="Lista radova">
+                <label class="showcase-tab" for="showcase-1">
+                  <strong>Ugaona garnitura po meri</strong>
+                  <span>Elegantno i funkcionalno rešenje prilagođeno savremenom enterijeru.</span>
+                </label>
+
+                <label class="showcase-tab" for="showcase-2">
+                  <strong>Kuhinja sa ostrvom po meri</strong>
+                  <span>Prostran koncept koji spaja estetiku, organizaciju i svakodnevnu praktičnost.</span>
+                </label>
+
+                <label class="showcase-tab" for="showcase-3">
+                  <strong>Minimalistička kuhinja po meri</strong>
+                  <span>Čiste linije i maksimalna iskorišćenost prostora u modernom izrazu.</span>
+                </label>
+
+                <label class="showcase-tab" for="showcase-4">
+                  <strong>Plakar za potkrovlje po meri</strong>
+                  <span>Precizno izrađeno rešenje za zahtevne dimenzije i specifične prostore.</span>
+                </label>
+              </div>
+
+              <div class="showcase-stage">
+                <div class="showcase-item item-1">
+                  <img src="images/karusel/Karusel_01.jpg" alt="Ugaona garnitura po meri">
+                  <div class="showcase-overlay">
+                    <strong>Ugaona garnitura po meri</strong>
+                    <span>Elegantno i funkcionalno rešenje prilagođeno savremenom enterijeru.</span>
+                  </div>
+                </div>
+
+                <div class="showcase-item item-2">
+                  <img src="images/karusel/Karusel_02.png" alt="Kuhinja sa ostrvom po meri">
+                  <div class="showcase-overlay">
+                    <strong>Kuhinja sa ostrvom po meri</strong>
+                    <span>Prostran koncept koji spaja estetiku, organizaciju i svakodnevnu praktičnost.</span>
+                  </div>
+                </div>
+
+                <div class="showcase-item item-3">
+                  <img src="images/karusel/Karusel_03.png" alt="Minimalistička kuhinja po meri">
+                  <div class="showcase-overlay">
+                    <strong>Minimalistička kuhinja po meri</strong>
+                    <span>Čiste linije i maksimalna iskorišćenost prostora u modernom izrazu.</span>
+                  </div>
+                </div>
+
+                <div class="showcase-item item-4">
+                  <img src="images/karusel/Karusel_04.png" alt="Plakar za potkrovlje po meri">
+                  <div class="showcase-overlay">
+                    <strong>Plakar za potkrovlje po meri</strong>
+                    <span>Precizno izrađeno rešenje za zahtevne dimenzije i specifične prostore.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="service-videos">
+            <h4>Video prezentacije</h4>
+            <div class="video-grid">
+              <article class="video-card">
+                <div class="video-media">
+                  <video controls preload="metadata" playsinline poster="images/posters/video_poster_srbija.jpg">
+                    <source src="images/videos/Video_2.mp4" type="video/mp4">
+                    Vaš pregledač ne podržava prikaz videa.
+                  </video>
+                </div>
+                <div class="video-meta">
+                  <div class="video-title"><span class="flag-icon" aria-hidden="true">🇷🇸</span><h5>Primer Srbija</h5></div>
+                  <p>Primer izrade i prezentacije projekta realizovanog za tržište Srbije.</p>
+                </div>
+              </article>
+
+              <article class="video-card">
+                <div class="video-media">
+                  <video controls preload="metadata" playsinline poster="images/posters/video_poster_crna_gora.jpg">
+                    <source src="images/videos/Video1_Crna_gora.mp4" type="video/mp4">
+                    Vaš pregledač ne podržava prikaz videa.
+                  </video>
+                </div>
+                <div class="video-meta">
+                  <div class="video-title"><span class="flag-icon" aria-hidden="true">🇲🇪</span><h5>Primer Crna gora</h5></div>
+                  <p>Primer video prezentacije projekta sa tržišta Crne Gore.</p>
+                </div>
+              </article>
+
+            </div>
+          </div>
+
+          <div class="subservice-block" id="secenje-plocastog-materijala">
+            <div class="subservice-header">
+              <h4>Uslužno sečenje pločastog materijala</h4>
+              <div class="subservice-kicker">Biesse oprema • sertifikovani tehničari • precizan rez</div>
+            </div>
+
+            <p class="subservice-intro">
+              Naša firma poseduje poseban pogon sa najsavremenijim mašinama italijanskog vodećeg brenda <strong>Biesse</strong>,
+              namenjen uslugama preciznog sečenja pločastih materijala za naše klijente. Usluge sečenja vršimo isključivo sa našim
+              materijalom i realizujemo ih i za fizička i za pravna lica u najkraćem roku.
+            </p>
+
+            <div class="machine-info-card">
+              <h5>Informacije o mašini</h5>
+              <ul class="machine-info-list">
+                <li>Skrojena za preduzeća koja traže CNC rešenje za precizno sečenje ploča uz odličnu opremu i programsku podršku.</li>
+                <li>Robusna i stabilna konstrukcija doprinosi visokoj preciznosti i pouzdanosti tokom rada.</li>
+                <li>Kod razdvojenih sečenja može vršiti različite preseke u jednom ciklusu, što dodatno povećava produktivnost.</li>
+                <li>Jedna ovakva mašina može iseći čak 150–200 ploča dimenzije 2800 × 2070 mm u jednoj smeni.</li>
+              </ul>
+              <div class="biesse-badge" aria-label="Biesse">BIESSE</div>
+            </div>
+
+            <div class="service-process">
+              <h4 class="service-process-title">Proces zakazivanja i poručivanja</h4>
+
+              <div class="cutting-process-grid">
+                <div class="cutting-step">
+                  <div class="cutting-step-number">1</div>
+                  <h5>Priprema porudžbine</h5>
+                  <p>
+                    Potrebno je da pripremite tačne dimenzije ploča i odaberete materijal. Materijal možete izabrati u našem
+                    izložbenom salonu ili unapred pripremiti šifru dekora koju ćete poslati zaposlenom zaduženom za prijem porudžbina.
+                    Prilikom naručivanja potrebno je naglasiti da li želite lično preuzimanje ili dostavu.
+                  </p>
+                </div>
+
+                <div class="cutting-step">
+                  <div class="cutting-step-number">2</div>
+                  <h5>Potvrda termina</h5>
+                  <p>
+                    Nakon provere stanja u magacinu za izabrani materijal, odmah potvrđujemo porudžbinu, zakazujemo prvi slobodan
+                    termin za uslužno sečenje i definišemo rok završetka. Za početak radova neophodna je avansna uplata preko računa
+                    ili gotovinom.
+                  </p>
+                </div>
+
+                <div class="cutting-step">
+                  <div class="cutting-step-number">3</div>
+                  <h5>Preuzimanje ili dostava</h5>
+                  <p>
+                    Po završetku radova pripremamo Vašu porudžbinu za lično preuzimanje ili dostavu na željenu adresu,
+                    u skladu sa prethodno dogovorenim načinom realizacije.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p class="service-mini-note">
+              Usluge sečenja vrše se za materijale poput <strong>iverice, medijapana, radnih ploča, zidnih obloga</strong> i sličnih
+              pločastih materijala, koje možete pogledati i naručiti i u našem salonu.
+            </p>
+
+            <p class="service-mini-note">
+              Garantujemo za <strong>preciznost reza</strong>, kao i za maksimalno očuvan materijal bez krzanja i grebanja.
+              Mašinama upravljaju naši <strong>sertifikovani tehničari</strong>, a za sečenje se koriste isključivo
+              <strong>dijamantska sečiva</strong>.
+            </p>
+
+            <div class="service-quote">Sečemo precizno, Vi gradite savršeno.</div>
+          </div>
+
+          </div>
+
+          
+          <div class="subservice-block" id="kantovanje">
+            <div class="subservice-header">
+              <h4>Uslužno kantovanje pločastog materijala</h4>
+              <div class="subservice-kicker">Biesse tehnologija • ABS kant trake • precizna završna obrada</div>
+            </div>
+
+            <p class="subservice-intro">
+              Pored uslužnog sečenja, naša firma Vam nudi i <strong>usluge kantovanja pločastog materijala</strong>. Na savremenim mašinama
+              obezbeđujemo da ivice budućeg nameštaja budu maksimalno zaštićene, uredno obrađene i spremne za dalju ugradnju ili montažu.
+              Za ovu vrstu obrade koristimo mašine italijanskog brenda <strong>Biesse</strong>, uz pažljivo podešen proces rada i stručan nadzor.
+            </p>
+
+            <div class="featured-machine">
+              <div class="featured-machine-visual">
+                <img src="images/machines/duo_grande_21.jpeg" alt="Biesse mašina za uslužno kantovanje u proizvodnom pogonu" />
+              </div>
+
+              <div class="featured-machine-copy">
+                <h5>Preciznost koja se vidi na svakom elementu</h5>
+                <p>
+                  Usluge kantovanja, kao i usluge sečenja, vršimo i za fizička i za pravna lica. Od kant traka koristimo
+                  <strong>ABS debljine 0,5 mm, 1 mm i 2 mm</strong>, za ploče debljina <strong>8 mm, 16 mm, 18 mm, 19 mm, 28 mm i 38 mm</strong>.
+                </p>
+                <p>
+                  Poseban pogon namenjen je isključivo ovim operacijama, kako bi završna obrada bila stabilna, precizna i estetski besprekorna.
+                </p>
+
+                <ul class="feature-list">
+                  <li>Ravna i uredna obrada ivica uz visoku zaštitu materijala.</li>
+                  <li>Profesionalna priprema elemenata za dalju montažu ili finalnu izradu nameštaja.</li>
+                  <li>Pouzdan kvalitet obrade zahvaljujući savremenim mašinama i preciznom vođenju procesa.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="machine-info-card">
+              <h5>Zašto Biesse?</h5>
+              <ul class="machine-info-list">
+                <li>Biesse je svetski lider u proizvodnji mašina i tehnologija za obradu drveta, stakla, kamena i kompozitnih materijala.</li>
+                <li>Kompanija je osnovana 1969. godine u Italiji i prepoznata je po kvalitetu, pouzdanosti i tehnološkom razvoju.</li>
+                <li>Ovaj brend je partner koji razume industriju i podržava svaku fazu proizvodnje — od ideje do gotovog proizvoda.</li>
+                <li>Za nas Biesse nije samo proizvođač mašina, već standard po kome merimo kvalitet i preciznost obrade materijala.</li>
+              </ul>
+              <div class="biesse-badge" aria-label="Biesse">BIESSE</div>
+            </div>
+
+            <div class="service-process">
+              <h4 class="service-process-title">Proces zakazivanja i poručivanja</h4>
+
+              <div class="cutting-process-grid">
+                <div class="cutting-step">
+                  <div class="cutting-step-number">1</div>
+                  <h5>Definisanje obrade</h5>
+                  <p>
+                    Prilikom pripreme dimenzija ploča za sečenje potrebno je naglasiti i strane koje će se kantovati
+                    na tom materijalu (duža ili kraća strana), kao i boju i debljinu kant trake.
+                  </p>
+                </div>
+
+                <div class="cutting-step">
+                  <div class="cutting-step-number">2</div>
+                  <h5>Provera materijala i termina</h5>
+                  <p>
+                    Nakon što naš zaposleni proveri stanje u magacinu, odmah potvrđujemo porudžbinu i zakazujemo termin
+                    i rok isporuke zajedno sa uslugama sečenja, kako bi ceo proces bio usklađen i efikasan.
+                  </p>
+                </div>
+
+                <div class="cutting-step">
+                  <div class="cutting-step-number">3</div>
+                  <h5>Finalna obrada i isporuka</h5>
+                  <p>
+                    Usluge kantovanja vrše naši sertifikovani tehničari, uz korišćenje kvalitetnih lepiva poput brenda
+                    <strong>Jowatherm</strong>. Preciznost, tačna obrada ivica i kvalitet kanta ostaju naš standard.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="machine-gallery">
+              <figure class="machine-shot">
+                <img src="images/machines/duo_grande_16.jpeg" alt="Biesse detalj mašine za obradu - logo i kontrolni sklop" />
+                <figcaption><strong>Biesse detalji i kontrola</strong> potvrđuju ozbiljnost opreme koja stoji iza svake precizne obrade.</figcaption>
+              </figure>
+
+              <figure class="machine-shot">
+                <img src="images/machines/duo_grande_17.jpeg" alt="Digitalna kontrola procesa i radni ekran mašine" />
+                <figcaption><strong>Digitalno upravljanje procesom</strong> omogućava precizna podešavanja i sigurnu realizaciju svake porudžbine.</figcaption>
+              </figure>
+
+              <figure class="machine-shot">
+                <img src="images/machines/duo_grande_18.jpeg" alt="Savremena Biesse proizvodna linija u pogonu" />
+                <figcaption><strong>Savremena proizvodna linija</strong> obezbeđuje stabilan kvalitet i pouzdan ritam rada u svakodnevnoj proizvodnji.</figcaption>
+              </figure>
+
+              <figure class="machine-shot">
+                <img src="images/machines/duo_grande_19.jpeg" alt="Biesse mašina sa nadzornim i upravljačkim sistemom" />
+                <figcaption><strong>Nadzor i precizna obrada</strong> doprinose urednoj završnici, tačno obrađenim ivicama i profesionalnom finalnom rezultatu.</figcaption>
+              </figure>
+            </div>
+
+            <div class="service-quote">Kantovanje je detalj koji pravi razliku između dobrog i zaista profesionalnog završetka.</div>
+          </div>
+
+
+          <div class="subservice-block" id="3d-dizajn">
+            <div class="subservice-header">
+              <h4>3D dizajn nameštaja po meri</h4>
+              <div class="subservice-kicker">Vizuelizacija pre izrade • jasnija odluka • manje korekcija</div>
+            </div>
+
+            <div class="design3d-layout">
+              <div class="design3d-copy-card">
+                <p>Pre nego što izrada počne, omogućavamo Vam da svoj budući nameštaj vidite unapred. Kroz 3D dizajn dobijate jasnu predstavu o izgledu, proporcijama, rasporedu i usklađenosti sa Vašim prostorom.</p>
+
+                <p>Na taj način proces postaje pregledniji, a mogućnost greške se svodi na minimum. Umesto zamišljanja na osnovu opisa, dobijate konkretan vizuelni prikaz rešenja koje je prilagođeno Vašim željama i dimenzijama prostora.</p>
+
+                <ul class="design3d-benefits">
+                  <li>Pregled izgleda nameštaja pre same izrade</li>
+                  <li>Lakše usklađivanje dimenzija, boja i materijala</li>
+                  <li>Sigurnije donošenje odluke pre početka proizvodnje</li>
+                  <li>Ušteda vremena i izbegavanje nepotrebnih korekcija u kasnijoj fazi</li>
+                </ul>
+              </div>
+
+              <div class="design3d-visual-card" aria-label="Prikaz 3D dizajn vizuala">
+                <div class="design3d-visual main">
+                  <img src="images/usluge/3d-dizajn/3d-dizajn-glavna.png" alt="3D dizajn kuhinje po meri">
+                  <div class="design3d-visual-label">
+                    <strong>Glavni prikaz koncepta</strong>
+                    Vizuelizacija rasporeda, proporcija i osnovne estetike pre početka izrade.
+                  </div>
+                </div>
+                <div class="design3d-visual">
+                  <img src="images/usluge/3d-dizajn/3d-dizajn-tv-zid.png" alt="3D dizajn TV zida po meri">
+                  <div class="design3d-visual-label">
+                    <strong>Materijali i boje</strong>
+                    Pregled usklađivanja dekora i završne obrade.
+                  </div>
+                </div>
+                <div class="design3d-visual">
+                  <img src="images/usluge/3d-dizajn/3d-dizajn-garderober.png" alt="3D dizajn garderobera po meri">
+                  <div class="design3d-visual-label">
+                    <strong>Detalji i funkcionalnost</strong>
+                    Fokus na organizaciju prostora i praktična rešenja.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="design3d-process">
+              <h4 class="service-process-title">Kako izgleda proces</h4>
+
+              <div class="design3d-process-grid">
+                <div class="design3d-step">
+                  <div class="design3d-step-number">1</div>
+                  <h5>Mere i želje</h5>
+                  <p>Dostavljate osnovne mere prostora, ideju i smernice za željeni izgled nameštaja.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">2</div>
+                  <h5>Prvi predlog</h5>
+                  <p>Na osnovu dogovora pripremamo početni 3D koncept prilagođen Vašem prostoru.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">3</div>
+                  <h5>Pregled rešenja</h5>
+                  <p>Zajedno prolazimo kroz raspored, proporcije, materijale i sve bitne detalje.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">4</div>
+                  <h5>Korekcije</h5>
+                  <p>Po potrebi vršimo korekcije kako bi finalno rešenje potpuno odgovaralo Vašim očekivanjima.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">5</div>
+                  <h5>Osnova za izradu</h5>
+                  <p>Nakon potvrde, finalni 3D prikaz postaje jasna i sigurna osnova za dalju izradu nameštaja.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="design3d-closing">Zamišljate prostor. Mi ga pretvaramo u jasan i konkretan prikaz pre izrade.</div>
+          </div>
+
+          <div class="subservice-block interior-section-shell" id="dizajn-enterijera">
+            <div class="subservice-header">
+              <h4>Dizajn enterijera</h4>
+              <div class="subservice-kicker">Funkcionalnost • atmosfera • realistična vizualizacija</div>
+            </div>
+
+            <div class="interior-intro-grid">
+              <div>
+                <div class="interior-copy-card">
+                  <p><strong>Dizajn enterijera po meri prostora i načina života.</strong></p>
+
+                  <p>Dobar enterijer nije samo lep prizor, već prostor koji funkcioniše prirodno, udobno i dugoročno. Za stanove, kuće, kancelarije i poslovne prostore izrađujemo kompletan dizajn enterijera sa jasnim planovima, realističnim 3D prikazima i promišljenim rasporedom svakog detalja.</p>
+
+                  <p>Naš cilj je da dobijete prostor koji je estetski usklađen, funkcionalan i prilagođen Vašem načinu života ili rada.</p>
+
+                  <ul class="interior-benefits">
+                    <li>Jasna predstava prostora pre početka radova</li>
+                    <li>Lakše donošenje odluka o rasporedu, bojama i materijalima</li>
+                    <li>Manje grešaka i manje naknadnih izmena</li>
+                    <li>Usklađenost estetike i funkcionalnosti</li>
+                    <li>Preciznija priprema za realizaciju</li>
+                  </ul>
+                </div>
+
+                <div class="interior-cta-card">
+                  <h5>Pregledajte neke od naših projekata</h5>
+                  <p>Dizajn koji pomaže da prostor sagledate jasno, pre same realizacije.</p>
+
+                  <div class="interior-video-card">
+                    <div class="interior-video-frame">
+                      <video controls preload="none" playsinline>
+                        <source src="videos/video_dizajn.mp4" type="video/mp4">
+                        Vaš browser ne podržava video prikaz.
+                      </video>
+                    </div>
+                    <div class="interior-video-caption">
+                      <strong>Video pregled projekata</strong>
+                      <span>Kratak prikaz enterijera, vizualizacija i projektantskog pristupa u 16:9 formatu.</span>
+                    </div>
+                  </div>
+
+                  <a class="interior-cta-btn" href="#galerija">Pogledajte projekte</a>
+                </div>
+              </div>
+
+              <div class="interior-highlights-card" aria-label="Ključni elementi dizajna enterijera">
+                <div class="interior-highlight">
+                  <img src="images/usluge/dizajn-enterijera/dizajn-enterijera-glavna.png" alt="Premium prikaz koncepta prostora u okviru dizajna enterijera">
+                  <div class="interior-highlight-text">
+                    <strong>Koncept prostora</strong>
+                    <span>Raspored, stil, proporcije i prvi vizuelni pravac enterijera prilagođen Vašem prostoru.</span>
+                  </div>
+                </div>
+                <div class="interior-highlight">
+                  <img src="images/usluge/dizajn-enterijera/dizajn-enterijera-materijali.png" alt="Prikaz materijala, tekstura i osvetljenja u dizajnu enterijera">
+                  <div class="interior-highlight-text">
+                    <strong>Materijali i atmosfera</strong>
+                    <span>Usklađivanje boja, tekstura, osvetljenja i završnih obrada za skladan i prepoznatljiv utisak.</span>
+                  </div>
+                </div>
+                <div class="interior-highlight">
+                  <img src="images/usluge/dizajn-enterijera/dizajn-enterijera-projektovanje.png" alt="Prikaz realne vizualizacije i projektovanja enterijera">
+                  <div class="interior-highlight-text">
+                    <strong>Realna vizualizacija</strong>
+                    <span>3D prikazi koji Vam olakšavaju odluku i daju sigurniju sliku rešenja pre same realizacije.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="design3d-process">
+              <h4 class="service-process-title">Kako izgleda proces</h4>
+
+              <div class="design3d-process-grid">
+                <div class="design3d-step">
+                  <div class="design3d-step-number">1</div>
+                  <h5>Uvid u prostor</h5>
+                  <p>Dostavljate plan prostora sa merama ili po dogovoru vršimo izlazak na teren i precizno merenje.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">2</div>
+                  <h5>Definisanje želja i potreba</h5>
+                  <p>Zajedno prolazimo kroz stil, funkciju prostora, prioritete i očekivanja.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">3</div>
+                  <h5>Idejno rešenje</h5>
+                  <p>Pripremamo osnovni koncept enterijera, raspored elemenata i vizuelni pravac projekta.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">4</div>
+                  <h5>3D vizualizacija i razrada</h5>
+                  <p>Izrađujemo realistične prikaze, usklađujemo materijale, boje, osvetljenje i detalje prostora.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">5</div>
+                  <h5>Finalizacija projekta</h5>
+                  <p>Po završetku dobijate kompletno rešenje sa prikazima, planovima i mogućnošću korekcija prema dogovorenom obimu saradnje.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="interior-closing">Enterijer treba da izgleda dobro na prvi pogled, ali još važnije — da funkcioniše svakog dana.</div>
+          </div>
+
+          <div class="subservice-block" id="kljuc-u-ruke">
+            <div class="subservice-header">
+              <h4>Sistem ključ u ruke</h4>
+              <div class="subservice-kicker">Jedan tim • jedna odgovornost • kompletna realizacija</div>
+            </div>
+
+            <div class="turnkey-grid">
+              <div class="turnkey-copy-card">
+                <p><strong>Kompletno opremanje prostora po sistemu ključ u ruke.</strong></p>
+
+                <p>Kada želite da prostor bude osmišljen, izrađen i završen kao celina, sistem ključ u ruke je najjednostavnije i najsigurnije rešenje. Kroz jedan usklađen proces preuzimamo planiranje, izradu i opremanje prostora, kako bi svaki element bio funkcionalno i estetski povezan.</p>
+
+                <p>Ovaj pristup je posebno pogodan za nove stanove, kuće i poslovne prostore, ali i za enterijere koji zahtevaju potpuno usklađeno rešenje bez improvizacije. Umesto da više izvođača radi odvojeno, dobijate jedan tim, jasan plan rada i veću kontrolu nad celokupnim rezultatom.</p>
+
+                <p>Zahvaljujući izradi nameštaja po meri, 3D razradi i preciznom usklađivanju svih elemenata, prostor se oblikuje kao celina — od prvog dogovora do završne montaže.</p>
+
+                <ul class="turnkey-feature-list">
+                  <li>Jedan kontakt tokom celog procesa</li>
+                  <li>Kompletno usklađivanje prostora kao celine</li>
+                  <li>Izrada nameštaja po meri projekta i realnih potreba</li>
+                  <li>Precizna organizacija izrade, isporuke i montaže</li>
+                  <li>Veća kontrola rokova i završnog kvaliteta</li>
+                  <li>Manje improvizacije i manje naknadnih korekcija</li>
+                </ul>
+              </div>
+
+              <div class="turnkey-side-stack" aria-label="Ključne prednosti sistema ključ u ruke">
+                <div class="turnkey-side-card">
+                  <strong>Jedan tim, jedna odgovornost</strong>
+                  <span>Jedan kontakt kroz ceo proces znači bolju organizaciju, manje nesporazuma i jasniju kontrolu svake faze.</span>
+                </div>
+
+                <div class="turnkey-side-card">
+                  <strong>Precizno planiranje pre realizacije</strong>
+                  <span>3D prikazi i jasna razrada pomažu da se odluke donesu na vreme i da se izbegnu nepotrebne izmene u kasnijoj fazi.</span>
+                </div>
+
+                <div class="turnkey-side-card">
+                  <strong>Izrada, montaža i završna usklađenost</strong>
+                  <span>Nameštaj se izrađuje po meri prostora, a završna realizacija se vodi tako da sve funkcioniše kao jedna skladna celina.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="design3d-process">
+              <h4 class="service-process-title">Kako izgleda proces</h4>
+
+              <div class="design3d-process-grid">
+                <div class="design3d-step">
+                  <div class="design3d-step-number">1</div>
+                  <h5>Uvid u projekat i potrebe prostora</h5>
+                  <p>Zajedno prolazimo kroz projekat, raspored, namenu prostora i obim opremanja. Ukoliko projekat ne postoji, moguće je prethodno ugovoriti izradu dizajna enterijera.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">2</div>
+                  <h5>Ponuda i definisanje obima radova</h5>
+                  <p>Na osnovu uvida pripremamo jasnu ponudu sa cenom, rokovima i precizno definisanim fazama realizacije.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">3</div>
+                  <h5>Planiranje prioriteta i dinamike</h5>
+                  <p>Zajedno određujemo redosled izvođenja, važnije i prateće stavke, kako bi ceo proces tekao organizovano i bez zastoja.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">4</div>
+                  <h5>Proizvodnja, isporuka i montaža</h5>
+                  <p>Elementi se izrađuju u skladu sa projektom, a zatim se organizuju isporuka i montaža uz pažljivo praćenje kvaliteta i rokova.</p>
+                </div>
+
+                <div class="design3d-step">
+                  <div class="design3d-step-number">5</div>
+                  <h5>Završno usklađivanje prostora</h5>
+                  <p>Cilj završne faze je da prostor bude funkcionalno zaokružen, estetski usklađen i spreman za upotrebu kao celina.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="turnkey-video-block">
+              <div class="turnkey-video-head">
+                <div>
+                  <h5>Primer kompletno opremljenog enterijera</h5>
+                  <p>Pogledajte kako izgleda prostor kada se planiranje, izrada i montaža vode kao jedna celina.</p>
+                </div>
+              </div>
+
+              <div class="turnkey-video-frame">
+                <video controls preload="none" playsinline poster="images/posters/poster_1.jpg">
+                  <source src="videos/video_kljuc_u_ruke.mp4" type="video/mp4">
+                  Vaš browser ne podržava video prikaz.
+                </video>
+              </div>
+
+              <div class="turnkey-video-note">Ovde ostaje prostor za duži video prikaz gotovog stana ili enterijera opremljenog po sistemu ključ u ruke, u 9:16 formatu.</div>
+            </div>
+
+            <div class="turnkey-closing">Sistem ključ u ruke nije samo način rada, već način da prostor od početka do kraja bude vođen promišljeno, precizno i bez rasipanja vremena na nepovezane korake.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section><section class="materials-section-shell" id="materijali">
+            <div class="materials-kicker">
+              <h3>Materijali</h3>
+              <div class="line" aria-hidden="true"></div>
+            </div>
+
+            <div class="materials-kicker" style="margin-bottom: 28px;">
+              <h3 style="font-size: clamp(22px, 1.6vw, 30px);">Brendovi u ponudi</h3>
+              <div class="line" aria-hidden="true"></div>
+            </div>
+
+            
+            <div class="brand-text-grid" aria-label="Brendovi u ponudi">
+              <div class="brand-text-card">EGGER</div>
+              <div class="brand-text-card">KRONOSPAN</div>
+              <div class="brand-text-card">KASTAMONU</div>
+
+              <div class="brand-text-card">SAIB</div>
+              <div class="brand-text-card">KAINDL</div>
+              <div class="brand-text-card">FALCO</div>
+
+              <div class="brand-text-card">GTV</div>
+              <div class="brand-text-card">ALVEUS</div>
+              <div class="brand-text-card">BLUM</div>
+            </div>
+
+            </div>
+
+            <div class="materials-copy-card">
+              <p>U izradi nameštaja po meri DUO GRANDE koristi pažljivo odabrane, proverene i visokokvalitetne materijale renomiranih proizvođača, jer verujemo da vrhunski rezultat počinje od kvaliteta svake osnove, svakog detalja i svake završne obrade.</p>
+
+              <p>Kupcima nudimo širok izbor <strong>pločastih materijala, dekora, okova, sudopera, elemenata bele tehnike i završnih rešenja</strong>, kako bi svaki projekat bio u potpunosti prilagođen prostoru, funkcionalnim potrebama i ličnom stilu naručioca.</p>
+
+              <p>Posebnu pažnju posvećujemo spoju <strong>estetike, trajnosti i praktičnosti</strong>, pa zajedno sa kupcem biramo materijale i komponente koje ne ostavljaju snažan utisak samo vizuelno, već pružaju sigurnost, dug vek trajanja i kvalitet u svakodnevnoj upotrebi.</p>
+
+              <p>Za izradu <strong>tapaciranog nameštaja</strong> obezbeđujemo veliki izbor kvalitetnih materijala, štofova, tekstura i nijansi, kako bi svaki komad pored udobnosti dobio i prepoznatljiv vizuelni karakter, potpuno usklađen sa enterijerom i željama kupca.</p>
+
+              <p>Zahvaljujući saradnji sa pouzdanim i priznanim brendovima, DUO GRANDE svojim klijentima omogućava da na jednom mestu pronađu sve što je potrebno za izradu kvalitetnog, dugotrajnog i estetski vrhunskog nameštaja po meri.</p>
+            </div>
+
+            <div class="materials-gallery" aria-label="Prikaz izbora materijala i opreme u salonu">
+              <figure class="materials-shot">
+                <img src="images/materijali/materijali_01.jpg" alt="Prikaz širokog izbora dekora, pločastih materijala i uzoraka u salonu DUO GRANDE">
+                <figcaption><strong>Veliki izbor dekora i pločastih materijala</strong> za precizno usklađivanje sa prostorom, stilom i željama kupca.</figcaption>
+              </figure>
+
+              <figure class="materials-shot">
+                <img src="images/materijali/materijali_02.jpg" alt="Prikaz okova, sudopera i dodatne opreme u salonu DUO GRANDE">
+                <figcaption><strong>Okovi, sudopere i dodatna oprema</strong> renomiranih brendova za funkcionalna i dugotrajna rešenja.</figcaption>
+              </figure>
+            </div>
+          </section>
+
+
+
+
+
+        
+  <section class="products-section" id="proizvodi">
+    <div class="products-wrap">
+      <div class="section-kicker">
+        <h2>PROIZVODI</h2>
+        <div class="line"></div>
+      </div>
+
+      <p class="products-intro">
+        U okviru naše ponude izdvajamo dve glavne celine — nameštaj od pločastog materijala i tapacirani nameštaj.
+        Svaka grupa obuhvata proizvode koji se izrađuju po meri, u skladu sa prostorom, funkcionalnim zahtevima i estetskim željama kupca.
+        <br><br>
+        <span style="display:inline-block; margin-top:4px; color:#e4bf68; font-size:1.12em; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;">Za sve proizvode postoji mogućnost kupovine na rate do 7 mesečnih rata.</span>
+      </p>
+
+      <div class="product-main-grid">
+        <article class="product-main-card">
+          <h3>NAMEŠTAJ OD PLOČASTOG MATERIJALA</h3>
+          <p>
+            Praktična, funkcionalna i estetski usklađena rešenja za savremene enterijere, sa velikim mogućnostima
+            prilagođavanja dimenzija, dekora i završne obrade.
+          </p>
+
+          <div class="product-sub-grid">
+            <a class="product-sub-item product-sub-link" href="#garderoberi">Garderoberi</a>
+            <a class="product-sub-item product-sub-link" href="#radni-stolovi">Radni stolovi i stolovi za šminkanje</a>
+            <a class="product-sub-item product-sub-link" href="#trpezarijski-stolovi">Trpezarijski stolovi</a>
+            <a class="product-sub-item product-sub-link" href="#komode">Komode</a>
+            <a class="product-sub-item product-sub-link" href="#kuhinje">Kuhinje</a>
+            <a class="product-sub-item product-sub-link" href="#nocni-ormarici">Noćni ormarići</a>
+            <a class="product-sub-item product-sub-link" href="#tv-komode">TV komode</a>
+            <a class="product-sub-item product-sub-link" href="#stocici-za-dnevni-boravak">Stočići za dnevni boravak</a>
+            <a class="product-sub-item product-sub-link" href="#cipelarnici">Cipelarnici</a>
+            <a class="product-sub-item product-sub-link" href="#civiluci">Čiviluci</a>
+          </div>
+        </article>
+
+        <article class="product-main-card">
+          <h3>TAPACIRANI NAMEŠTAJ</h3>
+          <p>
+            Udobni i vizuelno upečatljivi komadi nameštaja, izrađeni uz pažljiv izbor materijala, formi i detalja,
+            sa fokusom na komfor, trajnost i izgled koji prati karakter prostora.
+          </p>
+
+          <div class="product-sub-grid">
+            <a class="product-sub-item product-sub-link" href="#francuski-kreveti">Francuski kreveti</a>
+            <div class="product-sub-item">Kreveti</div>
+            <a class="product-sub-item product-sub-link" href="#ugaone-garniture">Ugaone garniture</a>
+            <a class="product-sub-item product-sub-link" href="#fotelje">Fotelje</a>
+            <a class="product-sub-item product-sub-link" href="#dvosedi">Dvosedi</a>
+            <a class="product-sub-item product-sub-link" href="#trosedi">Trosedi</a>
+          </div>
+        </article>
+      </div>
+
+      <section class="product-gallery-block" id="garderoberi">
+        <div class="product-gallery-header">
+          <h3>Garderoberi</h3>
+          <p>
+            Izabrani modeli garderobera i plakara iz ponude DUO GRANDE — spoj savremenog dizajna, funkcionalnosti i vrhunske izrade,
+            predstavljeni kroz pregled koji omogućava lak izbor idealnog rešenja za Vaš prostor.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/dvokrilni_plakar_klasiko.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/dvokrilni_plakar_klasiko.jpg" alt="Dvokrilni plakar Klasiko" loading="lazy">
+            <div class="product-gallery-caption"><strong>Dvokrilni plakar KLASIKO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/dvokrilni_plakar_verona.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/dvokrilni_plakar_verona.jpg" alt="Dvokrilni plakar Verona" loading="lazy">
+            <div class="product-gallery-caption"><strong>Dvokrilni plakar VERONA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/garderober_klasiko.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/garderober_klasiko.jpg" alt="Garderober Klasiko" loading="lazy">
+            <div class="product-gallery-caption"><strong>Garderober KLASIKO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/garderober_pikolo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/garderober_pikolo.jpg" alt="Garderober Pikolo" loading="lazy">
+            <div class="product-gallery-caption"><strong>Garderober PIKOLO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/klizni_plakar_klasiko.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/klizni_plakar_klasiko.jpg" alt="Klizni plakar Klasiko" loading="lazy">
+            <div class="product-gallery-caption"><strong>Klizni plakar KLASIKO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/klizni_plakar_parma.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/klizni_plakar_parma.jpg" alt="Klizni plakar Parma" loading="lazy">
+            <div class="product-gallery-caption"><strong>Klizni plakar PARMA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/plakar_diva.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/plakar_diva.jpg" alt="Plakar Diva" loading="lazy">
+            <div class="product-gallery-caption"><strong>Plakar DIVA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/plakar_imperiale.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/plakar_imperiale.jpg" alt="Plakar Imperiale" loading="lazy">
+            <div class="product-gallery-caption"><strong>Plakar IMPERIALE</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/plakar_ponte.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/plakar_ponte.jpg" alt="Plakar Ponte" loading="lazy">
+            <div class="product-gallery-caption"><strong>Plakar PONTE</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/garderoberi/trokrilni_plakar_pikolo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/garderoberi/trokrilni_plakar_pikolo.jpg" alt="Trokrilni plakar Pikolo" loading="lazy">
+            <div class="product-gallery-caption"><strong>Trokrilni plakar PIKOLO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="radni-stolovi">
+        <div class="product-gallery-header">
+          <h3>Radni stolovi i stolovi za šminkanje</h3>
+          <p>
+            Izabrani modeli radnih stolova i stolova za šminkanje iz ponude DUO GRANDE — praktična i estetski usklađena rešenja
+            za rad, učenje, organizaciju i uređenje enterijera.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/radni_sto_stella.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/radni_sto_stella.jpg" alt="Radni sto Stella" loading="lazy">
+            <div class="product-gallery-caption"><strong>Radni sto STELLA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/radni_sto_presidente.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/radni_sto_presidente.jpg" alt="Radni sto Presidente" loading="lazy">
+            <div class="product-gallery-caption"><strong>Radni sto PRESIDENTE</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/sto_za_sminkanje_donna.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/sto_za_sminkanje_donna.jpg" alt="Sto za šminkanje Donna" loading="lazy">
+            <div class="product-gallery-caption"><strong>Sto za šminkanje DONNA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/sto_za_sminkanje_segreto.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/sto_za_sminkanje_segreto.jpg" alt="Sto za šminkanje Segreto" loading="lazy">
+            <div class="product-gallery-caption"><strong>Sto za šminkanje SEGRETO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/sto_za_sminkanje_eva.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/radni_stolovi_i_stolovi_za_sminkanje/sto_za_sminkanje_eva.jpg" alt="Sto za šminkanje Eva" loading="lazy">
+            <div class="product-gallery-caption"><strong>Sto za šminkanje EVA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="trpezarijski-stolovi">
+        <div class="product-gallery-header">
+          <h3>Trpezarijski stolovi</h3>
+          <p>
+            Izabrani modeli trpezarijskih stolova iz ponude DUO GRANDE — funkcionalna i estetski usklađena rešenja
+            za trpezarije, dnevne prostore i savremene enterijere.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/trpezarijski_stolovi/trpezarijski_sto_mateo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/trpezarijski_stolovi/trpezarijski_sto_mateo.jpg" alt="Trpezarijski sto Mateo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Trpezarijski sto MATEO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/trpezarijski_stolovi/trpezarijski_sto_mix.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/trpezarijski_stolovi/trpezarijski_sto_mix.jpg" alt="Trpezarijski sto Mix" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Trpezarijski sto MIX</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="komode">
+        <div class="product-gallery-header">
+          <h3>Komode</h3>
+          <p>
+            Izabrani modeli komoda iz ponude DUO GRANDE — praktična, pregledna i estetski usklađena rešenja
+            za organizaciju prostora i dopunu savremenog enterijera.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/komode/komoda_cezar.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/komode/komoda_cezar.jpg" alt="Komoda Cezar" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Komoda CEZAR</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/komode/komoda_diva.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/komode/komoda_diva.jpg" alt="Komoda Diva" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Komoda DIVA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/komode/komoda_essenza.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/komode/komoda_essenza.jpg" alt="Komoda Essenza" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Komoda ESSENZA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/komode/komoda_lino.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/komode/komoda_lino.jpg" alt="Komoda Lino" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Komoda LINO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/komode/komoda_roma.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/komode/komoda_roma.jpg" alt="Komoda Roma" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Komoda ROMA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="kuhinje">
+        <div class="product-gallery-header">
+          <h3>Kuhinje</h3>
+          <p>
+            Izabrani modeli kuhinja iz ponude DUO GRANDE — funkcionalna, estetski usklađena i praktična rešenja
+            za savremene domove i svakodnevnu upotrebu.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/kuhinje/kuhinja_klasik_plus.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/kuhinje/kuhinja_klasik_plus.jpg" alt="Kuhinja Klasik Plus" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Kuhinja KLASIK PLUS</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/kuhinje/kuhinja_rafaelo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/kuhinje/kuhinja_rafaelo.jpg" alt="Kuhinja Rafaelo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Kuhinja RAFAELO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="nocni-ormarici">
+        <div class="product-gallery-header">
+          <h3>Noćni ormarići</h3>
+          <p>
+            Izabrani modeli noćnih ormarića iz ponude DUO GRANDE — praktična, elegantna i estetski usklađena rešenja za spavaće sobe.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/nocni_ormarici/nocni_ormaric_casseto.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/nocni_ormarici/nocni_ormaric_casseto.jpg" alt="Noćni ormarić Casseto" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Noćni ormarić CASSETO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/nocni_ormarici/nocni_ormaric_casseto_plus.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/nocni_ormarici/nocni_ormaric_casseto_plus.jpg" alt="Noćni ormarić Casseto Plus" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Noćni ormarić CASSETO PLUS</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/nocni_ormarici/nocni_ormaric_leo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/nocni_ormarici/nocni_ormaric_leo.jpg" alt="Noćni ormarić Leo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Noćni ormarić LEO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/nocni_ormarici/nocni_ormaric_modena.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/nocni_ormarici/nocni_ormaric_modena.jpg" alt="Noćni ormarić Modena" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Noćni ormarić MODENA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="tv-komode">
+        <div class="product-gallery-header">
+          <h3>TV komode</h3>
+          <p>
+            Izabrani modeli TV komoda iz ponude DUO GRANDE — praktična, pregledna i estetski usklađena rešenja
+            za dnevne sobe, TV zidove i savremene enterijere.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_aria_upload.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_aria_upload.jpg" alt="TV komoda Aria" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda ARIA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_bella.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_bella.jpg" alt="TV komoda Bella" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda BELLA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_capri.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_capri.jpg" alt="TV komoda Capri" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda CAPRI</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_diva.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_diva.jpg" alt="TV komoda Diva" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda DIVA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_leontina.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_leontina.jpg" alt="TV komoda Leontina" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda LEONTINA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_lux.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_lux.jpg" alt="TV komoda Lux" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda LUX</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_primo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_primo.jpg" alt="TV komoda Primo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda PRIMO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/tv_komode/tv_komoda_toscana.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/tv_komode/tv_komoda_toscana.jpg" alt="TV komoda Toscana" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>TV komoda TOSCANA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="stocici-za-dnevni-boravak">
+        <div class="product-gallery-header">
+          <h3>Stočići za dnevni boravak</h3>
+          <p>
+            Izabrani modeli stočića za dnevni boravak iz ponude DUO GRANDE — praktična, funkcionalna i estetski usklađena rešenja
+            za savremene dnevne sobe i enterijere različitog karaktera.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stococ_livelolong.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stococ_livelolong.jpg" alt="Stočić Livelo Long" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić LIVELO LONG</strong><span>13.500 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stocic_belisimo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stocic_belisimo.jpg" alt="Stočić Belisimo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić BELISIMO</strong><span>14.300 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stocic_corona.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stocic_corona.jpg" alt="Stočić Corona" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić CORONA</strong><span>9.900 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stocic_livelo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stocic_livelo.jpg" alt="Stočić Livelo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić LIVELO</strong><span>12.500 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stocic_milano.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stocic_milano.jpg" alt="Stočić Milano" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić MILANO</strong><span>22.000 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stocic_mix.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stocic_mix.jpg" alt="Stočić Mix" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić MIX</strong><span>9.900 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/stocici_za_dnevni_boravak/stocic_palermo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/stocici_za_dnevni_boravak/stocic_palermo.jpg" alt="Stočić Palermo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Stočić PALERMO</strong><span>29.700 rsd · Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="cipelarnici">
+        <div class="product-gallery-header">
+          <h3>Cipelarnici</h3>
+          <p>
+            Izabrani modeli cipelarnika iz ponude DUO GRANDE — funkcionalna i estetski usklađena rešenja za uredan ulazni prostor,
+            sa pažljivo osmišljenim rasporedom i vizuelnim identitetom koji se lako uklapa u savremeni enterijer.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/cipelarnici/cipelarnik_tropico.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/cipelarnici/cipelarnik_tropico.jpg" alt="Cipelarnik Tropico" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Cipelarnik TROPICO</strong><span>33.000 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/cipelarnici/cipelarnik_kuba.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/cipelarnici/cipelarnik_kuba.jpg" alt="Cipelarnik Kuba" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Cipelarnik KUBA</strong><span>18.150 rsd · Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="civiluci">
+        <div class="product-gallery-header">
+          <h3>Čiviluci</h3>
+          <p>
+            Izabrani modeli čiviluka iz ponude DUO GRANDE — praktični detalji za organizovan ulazni prostor,
+            uz spoj minimalističkog izraza, funkcionalnosti i urednog premium prikaza proizvoda.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/civiluci/civiluk_bravo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/civiluci/civiluk_bravo.jpg" alt="Čiviluk Bravo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Čiviluk BRAVO</strong><span>Uskoro dostupan · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/civiluci/civiluk_klasiko.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/civiluci/civiluk_klasiko.jpg" alt="Čiviluk Klasiko" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Čiviluk KLASIKO</strong><span>Uskoro dostupan · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/civiluci/civiluk_pregolaro.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/civiluci/civiluk_pregolaro.jpg" alt="Čiviluk Pergolaro" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Čiviluk PERGOLARO</strong><span>16.400 rsd · Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/civiluci/civiluk_retro.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/civiluci/civiluk_retro.jpg" alt="Čiviluk Retro" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Čiviluk RETRO</strong><span>Uskoro dostupan · Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="tapacirani-namestaj">
+        <div class="product-gallery-header">
+          <h3>Tapacirani nameštaj</h3>
+          <p>
+            Tapacirani nameštaj DUO GRANDE spaja pažljivo odabrane materijale, kvalitetne štofove, preciznu izradu
+            i stabilnu konstrukciju. Svaki komad je osmišljen da pruži udobnost, dugotrajnost i premium izgled — od izbora
+            materijala i završne obrade, do svakodnevne upotrebe u prostoru.
+          </p>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="francuski-kreveti">
+        <div class="product-gallery-header">
+          <h3>Francuski kreveti</h3>
+          <p>
+            Izabrani modeli francuskih kreveta iz ponude DUO GRANDE — tapacirani komadi namenjeni udobnosti,
+            stabilnosti i premium izgledu spavaće sobe, predstavljeni kroz ujednačene kataloške kartice.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_apolo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_apolo.jpg" alt="Francuski krevet Apolo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet APOLO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_arizona.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_arizona.jpg" alt="Francuski krevet Arizona" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet ARIZONA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_dubai.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_dubai.jpg" alt="Francuski krevet Dubai" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet DUBAI</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_elegant.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_elegant.jpg" alt="Francuski krevet Elegant" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet ELEGANT</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_euphoria.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_euphoria.jpg" alt="Francuski krevet Euphoria" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet EUPHORIA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_izi.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_izi.jpg" alt="Francuski krevet Izi" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet IZI</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_matej.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_matej.jpg" alt="Francuski krevet Matej" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet MATEJ</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_monaco.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_monaco.jpg" alt="Francuski krevet Monaco" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet MONACO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_royal.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_royal.jpg" alt="Francuski krevet Royal" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet ROYAL</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_sigma.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_sigma.jpg" alt="Francuski krevet Sigma" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet SIGMA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/frncuski_krevet_heart.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/frncuski_krevet_heart.jpg" alt="Francuski krevet Heart" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet HEART</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/francuski_kreveti/francuski_krevet_calmo.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/francuski_kreveti/francuski_krevet_calmo.jpg" alt="Francuski krevet Calmo" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Francuski krevet CALMO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="ugaone-garniture">
+        <div class="product-gallery-header">
+          <h3>Ugaone garniture</h3>
+          <p>
+            Izabrani modeli ugaonih garnitura iz ponude DUO GRANDE — udobna, funkcionalna i vizuelno usklađena rešenja
+            za dnevni boravak, predstavljena kroz ujednačene premium kataloške kartice.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_adam.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_adam.jpg" alt="Ugaona garnitura ADAM" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura ADAM</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_andjela.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_andjela.jpg" alt="Ugaona garnitura ANĐELA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura ANĐELA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_andreanew.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_andreanew.jpg" alt="Ugaona garnitura ANDREA NEW" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura ANDREA NEW</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_aurora.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_aurora.jpg" alt="Ugaona garnitura AURORA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura AURORA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_beta.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_beta.jpg" alt="Ugaona garnitura BETA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura BETA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_brisel.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_brisel.jpg" alt="Ugaona garnitura BRISEL" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura BRISEL</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_drina.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_drina.jpg" alt="Ugaona garnitura DRINA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura DRINA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_elan.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_elan.jpg" alt="Ugaona garnitura ELAN" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura ELAN</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_exclusif.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_exclusif.jpg" alt="Ugaona garnitura EXCLUSIF" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura EXCLUSIF</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_gaga.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_gaga.jpg" alt="Ugaona garnitura GAGA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura GAGA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_glorija.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_glorija.jpg" alt="Ugaona garnitura GLORIJA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura GLORIJA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_harmony.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_harmony.jpg" alt="Ugaona garnitura HARMONY" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura HARMONY</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_helena.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_helena.jpg" alt="Ugaona garnitura HELENA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura HELENA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_jana.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_jana.jpg" alt="Ugaona garnitura JANA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura JANA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_kaliopi.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_kaliopi.jpg" alt="Ugaona garnitura KALIOPI" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura KALIOPI</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_kristal.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_kristal.jpg" alt="Ugaona garnitura KRISTAL" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura KRISTAL</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_lazar.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_lazar.jpg" alt="Ugaona garnitura LAZAR" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura LAZAR</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_lea.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_lea.jpg" alt="Ugaona garnitura LEA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura LEA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_lisa.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_lisa.jpg" alt="Ugaona garnitura LISA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura LISA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_natasa.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_natasa.jpg" alt="Ugaona garnitura NATAŠA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura NATAŠA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_nina.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_nina.jpg" alt="Ugaona garnitura NINA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura NINA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_relax.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_relax.jpg" alt="Ugaona garnitura RELAX" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura RELAX</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_rija.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_rija.jpg" alt="Ugaona garnitura RIJA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura RIJA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_san.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_san.jpg" alt="Ugaona garnitura SAN" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura SAN</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/ugaone_garniture/ugaona_stella.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/ugaone_garniture/ugaona_stella.jpg" alt="Ugaona garnitura STELLA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Ugaona garnitura STELLA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="fotelje">
+        <div class="product-gallery-header">
+          <h3>Fotelje</h3>
+          <p>
+            Izabrani modeli fotelja iz ponude DUO GRANDE — udobni i vizuelno upečatljivi komadi tapaciranog nameštaja,
+            predstavljeni kroz ujednačene premium kataloške kartice.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/fotelje/fotelja_adam.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/fotelje/fotelja_adam.jpg" alt="Fotelja ADAM" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Fotelja ADAM</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/fotelje/fotelja_helena.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/fotelje/fotelja_helena.jpg" alt="Fotelja HELENA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Fotelja HELENA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/fotelje/fotelja_lazar.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/fotelje/fotelja_lazar.jpg" alt="Fotelja LAZAR" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Fotelja LAZAR</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/fotelje/fotelja_nora.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/fotelje/fotelja_nora.jpg" alt="Fotelja NORA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Fotelja NORA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/fotelje/fotelja_suza.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/fotelje/fotelja_suza.jpg" alt="Fotelja SUZA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Fotelja SUZA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/fotelje/fotelja_trik.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/fotelje/fotelja_trik.jpg" alt="Fotelja TRIK" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Fotelja TRIK</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="dvosedi">
+        <div class="product-gallery-header">
+          <h3>Dvosedi</h3>
+          <p>
+            Izabrani modeli dvoseda iz ponude DUO GRANDE — kompaktna, udobna i funkcionalna rešenja za prostore
+            u kojima su važni komfor, praktičan raspored i premium izgled.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/dvosedi/dvosed_universal.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/dvosedi/dvosed_universal.jpg" alt="Dvosed UNIVERSAL" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Dvosed UNIVERSAL</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="product-gallery-block" id="trosedi">
+        <div class="product-gallery-header">
+          <h3>Trosedi</h3>
+          <p>
+            Izabrani modeli troseda iz ponude DUO GRANDE — veći tapacirani komadi za dnevne boravke, predstavljeni
+            kroz ujednačene premium kataloške kartice.
+          </p>
+        </div>
+
+        <div class="product-gallery-grid">
+          <a class="product-gallery-card" href="./images/proizvodi/trosedi/graof_helena.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/trosedi/graof_helena.jpg" alt="Grof HELENA" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Grof HELENA</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/trosedi/grof_adam.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/trosedi/grof_adam.jpg" alt="Grof ADAM" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Grof ADAM</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/trosedi/grof_atlantik.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/trosedi/grof_atlantik.jpg" alt="Grof ATLANTIK" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Grof ATLANTIK</strong><span>Klik za veći prikaz</span></div>
+          </a>
+
+          <a class="product-gallery-card" href="./images/proizvodi/trosedi/grof_bruno.jpg" target="_blank" rel="noopener">
+            <img src="./images/proizvodi/trosedi/grof_bruno.jpg" alt="Grof BRUNO" loading="lazy" decoding="async">
+            <div class="product-gallery-caption"><strong>Grof BRUNO</strong><span>Klik za veći prikaz</span></div>
+          </a>
+        </div>
+      </section>
+
+
+    </div>
+  </section>
+
+  
+
+
+
+
+
+  <section class="contact-section" id="kontakt">
+    <div class="contact-wrap">
+      <div class="section-kicker">
+        <h2>KONTAKT</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="contact-hero">
+        <div class="contact-card">
+          <div class="contact-kicker">DUO GRANDE DOO</div>
+          <h2>Kontakt, saloni i saradnja</h2>
+          <p>
+            Za informacije o ponudi, porudžbinama, saradnji ili poseti izložbenom salonu, kontaktirajte nas direktno
+            telefonom ili putem email adrese. Naše izložbene salone možete posetiti na dve lokacije.
+          </p>
+          <div class="contact-actions">
+            <a class="premium-btn" href="tel:+381658522732">Pozovi DUO GRANDE</a>
+            <a class="premium-btn secondary" href="mailto:duograndedoo@gmail.com">Pošalji email</a>
+            <a class="premium-btn secondary" href="#lokacije">Pogledaj lokacije</a>
+          </div>
+        </div>
+
+        <div class="contact-info-panel contact-card">
+          <div class="info-tile">
+            <strong>Telefoni</strong>
+            <a href="tel:+381658522732">+381 65 8522 732</a>
+            <a href="tel:+381649655203">+381 64 9655 203</a>
+            <a href="tel:+381642366788">+381 64 2366 788</a>
+          </div>
+          <div class="info-tile">
+            <strong>Email</strong>
+            <a href="mailto:duograndedoo@gmail.com">duograndedoo@gmail.com</a>
+          </div>
+          <div class="info-tile">
+            <strong>Podaci firme</strong>
+            <span>PIB: 114673435</span>
+            <span>MB: 22054112</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card" id="saradnja">
+        <div class="contact-kicker">Postanite deo tima</div>
+        <h3>Kako postati deo DUO GRANDE tima</h3>
+        <p>
+          Ukoliko želite da postanete deo našeg tima, pošaljite nam svoj CV. Prijave razmatramo pažljivo,
+          sa fokusom na iskustvo, odgovornost, radne navike i spremnost za rad u savremenim uslovima.
+        </p>
+
+        <div class="cv-grid">
+          <div class="cv-highlight">
+            <strong>Kako dostaviti CV</strong>
+            <p>
+              CV možete pripremiti u A4 formatu i poslati na našu email adresu. Najvažnije je da podaci budu jasni,
+              uredni i pregledni.
+            </p>
+            <a class="premium-btn" href="mailto:duograndedoo@gmail.com?subject=Prijava%20za%20posao%20-%20CV">Pošalji CV emailom</a>
+          </div>
+
+          <ul class="cv-list">
+            <li>Ime i prezime</li>
+            <li>Adresa stanovanja</li>
+            <li>Kontakt telefon</li>
+            <li>Završene škole i stepen obrazovanja</li>
+            <li>Kratka biografija</li>
+            <li>Dosadašnja radna mesta, period rada i pozicija</li>
+            <li>Iskustvo sa stolarskim alatom i mašinama</li>
+            <li>Veštine</li>
+            <li>Sertifikati i završene obuke</li>
+            <li>Hobiji — opciono</li>
+            <li>Kategorije vozačke dozvole</li>
+            <li>Slika u CV-u je obavezna</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="locations-block" id="lokacije">
+        <div class="locations-header">
+          <h3>Kako stići do nas</h3>
+          <p>
+            Izložbene salone možete posetiti u Radincu i Poljani. Klik na dugme za navigaciju otvara Google Maps
+            sa tačnom rutom do izabrane lokacije.
+          </p>
+        </div>
+
+        <div class="location-grid">
+          <article class="location-card">
+            <div class="map-frame">
+              <iframe title="DUO GRANDE izložbeni salon Radinac" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Carigradska%2019%20Radinac%20Smederevo%20Duo%20Grande&output=embed"></iframe>
+            </div>
+            <div class="location-content">
+              <h4>Izložbeni salon u Radincu</h4>
+              <p>Radinac, Ulica Carigradska 19, Smederevo</p>
+              <div class="working-time">
+                <span><strong>Radno vreme</strong></span>
+                <span>Pon–Pet: 08:00 – 19:00h</span>
+                <span>Sub: 08:00 – 16:00h</span>
+              </div>
+              <a class="premium-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Carigradska%2019%2C%20Radinac%2C%20Smederevo">Pokreni navigaciju</a>
+            </div>
+          </article>
+
+          <article class="location-card">
+            <div class="map-frame">
+              <iframe title="DUO GRANDE izložbeni salon Poljana" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Nikole%20Tesle%20BB%20Poljana%20Po%C5%BEarevac%20Duo%20Grande&output=embed"></iframe>
+            </div>
+            <div class="location-content">
+              <h4>Izložbeni salon u Poljani</h4>
+              <p>Požarevac / Poljana, Ulica Nikole Tesle BB</p>
+              <div class="working-time">
+                <span><strong>Radno vreme</strong></span>
+                <span>Pon–Pet: 08:00 – 16:00h</span>
+                <span>Sub: 08:00 – 14:00h</span>
+              </div>
+              <a class="premium-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Nikole%20Tesle%20BB%2C%20Poljana%2C%20Po%C5%BEarevac">Pokreni navigaciju</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="contact-footer-card">
+        <div class="footer-info-group">
+          <strong>DUO GRANDE DOO</strong>
+          <span>Premium izrada nameštaja po meri, tapacirani nameštaj i opremanje enterijera.</span>
+        </div>
+        <div class="footer-info-group">
+          <strong>Saradnja</strong>
+          <span>Veleprodaja</span>
+          <span>Saradnja sa malim preduzećima i salonima</span>
+        </div>
+        <div class="footer-info-group">
+          <strong>Brzi kontakt</strong>
+          <a href="tel:+381658522732">+381 65 8522 732</a>
+          <a href="mailto:duograndedoo@gmail.com">duograndedoo@gmail.com</a>
+          <a href="#">Idi na vrh</a>
+        </div>
+
+        <div class="designer-credit">
+          <img src="images/dm-digitalenterprise-logo.webp" alt="D&M Digitalenterprise logo" loading="lazy">
+          <div>
+            <span>Dizajn i izrada web stranice</span>
+            <a href="https://dmdigitalenterprise.com/" target="_blank" rel="noopener">D&amp;M Digitalenterprise</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
