@@ -3407,6 +3407,300 @@
       }
     }
 
+  
+    /* PREMIUM KATALOZI — DUO GRANDE */
+    .catalog-section {
+      position: relative;
+      z-index: 40;
+      background: linear-gradient(180deg, #241810 0%, #1a120c 100%);
+      color: #f7ecdf;
+      padding: 108px 0 88px;
+      border-top: 1px solid rgba(231, 199, 136, .10);
+      overflow: hidden;
+    }
+
+    .catalog-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(231,199,136,.08), rgba(231,199,136,0) 34%),
+        radial-gradient(circle at 88% 18%, rgba(231,199,136,.07), rgba(231,199,136,0) 36%);
+      opacity: .86;
+    }
+
+    .catalog-wrap {
+      position: relative;
+      z-index: 2;
+      width: min(1240px, 92vw);
+      margin: 0 auto;
+    }
+
+    .catalog-hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      border: 1px solid rgba(231, 199, 136, .16);
+      background: #1a120c;
+      box-shadow:
+        0 28px 64px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      margin-bottom: 48px;
+    }
+
+    .catalog-hero img {
+      display: block;
+      width: 100%;
+      height: 620px;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(1.03) contrast(1.02);
+    }
+
+    .catalog-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(18, 11, 7, .10) 0%, rgba(18, 11, 7, .34) 44%, rgba(18, 11, 7, .86) 100%),
+        linear-gradient(to right, rgba(18, 11, 7, .18) 0%, rgba(18, 11, 7, 0) 38%, rgba(18, 11, 7, .12) 100%);
+    }
+
+    .catalog-hero-content {
+      position: absolute;
+      left: 50%;
+      bottom: 64px;
+      transform: translateX(-50%);
+      z-index: 2;
+      width: min(920px, 88%);
+      text-align: center;
+    }
+
+    .catalog-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(22, 14, 9, .56);
+      border: 1px solid rgba(231, 199, 136, .22);
+      color: rgba(247,236,223,.86);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .catalog-hero-content h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 4.2vw, 68px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: .08em;
+      color: #fff6eb;
+      text-shadow: 0 8px 28px rgba(0,0,0,.34);
+    }
+
+    .catalog-hero-line {
+      width: 148px;
+      height: 2px;
+      margin: 24px auto 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #b98b43, #ead39f, #b98b43);
+      opacity: .96;
+    }
+
+    .catalog-hero-content p {
+      margin: 0 auto;
+      max-width: 780px;
+      font-size: clamp(17px, 1.15vw, 21px);
+      line-height: 1.78;
+      color: rgba(255,244,232,.92);
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .catalog-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 228px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 28px;
+      padding: 32px 28px 28px;
+      text-decoration: none;
+      background:
+        radial-gradient(circle at top right, rgba(241,221,176,.11), rgba(241,221,176,0) 38%),
+        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.032));
+      border: 1px solid rgba(231, 199, 136, .14);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.055);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+    }
+
+    .catalog-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(242,220,192,.06);
+      pointer-events: none;
+    }
+
+    .catalog-card::after {
+      content: "";
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      top: 92px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(185,139,67,.78), rgba(234,211,159,.34), rgba(185,139,67,0));
+      opacity: .68;
+      pointer-events: none;
+    }
+
+    .catalog-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(231,199,136,.34);
+      background:
+        radial-gradient(circle at top right, rgba(241,221,176,.16), rgba(241,221,176,0) 40%),
+        linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+      box-shadow:
+        0 26px 58px rgba(0,0,0,.26),
+        0 0 28px rgba(215,177,90,.10),
+        inset 0 1px 0 rgba(255,255,255,.07);
+    }
+
+    .catalog-card h3 {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 34px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(23px, 1.55vw, 30px);
+      line-height: 1.18;
+      font-weight: 500;
+      color: #fff4e8;
+    }
+
+    .catalog-card p {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 26px;
+      font-size: 15px;
+      line-height: 1.68;
+      color: rgba(247,236,223,.78);
+    }
+
+    .catalog-card span {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      gap: 10px;
+      padding: 13px 21px;
+      border-radius: 999px;
+      color: #fff8ee;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #9a7038, #d3a85a, #87602f);
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+
+    .catalog-card span::after {
+      content: "→";
+      font-size: 15px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 980px) {
+      .catalog-hero img {
+        height: 520px;
+      }
+
+      .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .catalog-section {
+        padding: 78px 0 58px;
+      }
+
+      .catalog-hero {
+        border-radius: 24px;
+        margin-bottom: 34px;
+      }
+
+      .catalog-hero img {
+        height: 430px;
+      }
+
+      .catalog-hero-content {
+        bottom: 34px;
+        width: 88%;
+      }
+
+      .catalog-eyebrow {
+        font-size: 10px;
+        letter-spacing: .14em;
+        padding: 8px 14px;
+        margin-bottom: 14px;
+      }
+
+      .catalog-hero-content h2 {
+        font-size: clamp(28px, 8vw, 42px);
+        letter-spacing: .055em;
+      }
+
+      .catalog-hero-line {
+        margin: 18px auto 16px;
+        width: 118px;
+      }
+
+      .catalog-hero-content p {
+        font-size: 15px;
+        line-height: 1.66;
+      }
+
+      .catalog-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .catalog-card {
+        min-height: 206px;
+        padding: 28px 24px 24px;
+        border-radius: 24px;
+      }
+
+      .catalog-card h3 {
+        margin-bottom: 30px;
+      }
+
+      .catalog-card::after {
+        left: 24px;
+        right: 24px;
+        top: 84px;
+      }
+    }
+
   </style>
 </style>
 </head>
@@ -4951,6 +5245,118 @@
 
 
 
+
+
+  <section class="catalog-section" id="katalozi">
+    <div class="catalog-wrap">
+      <div class="catalog-hero">
+        <img src="images/katalozi/katalog-hero.jpg" alt="DUO GRANDE premium kolekcije" loading="lazy" decoding="async">
+        <div class="catalog-hero-content">
+          <div class="catalog-eyebrow">DUO GRANDE KATALOZI</div>
+          <h2>PREMIUM KOLEKCIJE</h2>
+          <div class="catalog-hero-line"></div>
+          <p>
+            Pažljivo osmišljene kolekcije koje spajaju moderan dizajn, funkcionalnost i vrhunsku izradu.
+            Pregledajte naše kataloge i pronađite inspiraciju za Vaš enterijer.
+          </p>
+        </div>
+      </div>
+
+      <div class="catalog-grid">
+        <a class="catalog-card" href="https://drive.google.com/file/d/1Y8MzUJMxfaDWDnvQ9SOarZNvaweBFwad/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Ugaone garniture</h3>
+            <p>Premium kolekcija modernih ugaonih garnitura.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/19mdAKPDODeoeQViemTfE_i1xN3KpRA-k/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Dvosedi</h3>
+            <p>Elegantni modeli za savremen enterijer.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1KBgYPdKo93DNngyhEu05JjXndlZby12o/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Francuski kreveti</h3>
+            <p>Spoj luksuza, udobnosti i vrhunskog dizajna.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1JqBUhpzwFB4RwWtTTapWFYbP-zz7iZpI/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Radni stolovi</h3>
+            <p>Funkcionalna rešenja za radni i poslovni prostor.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1JqBUhpzwFB4RwWtTTapWFYbP-zz7iZpI/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Stočići za dnevni boravak</h3>
+            <p>Diskretni premium detalji za dnevni prostor.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1O5tpFDeUiobTqgkrXQBnJXfN-lR7EGqp/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Noćni ormarići</h3>
+            <p>Minimalistički detalji sa premium karakterom.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1tPjNQ69RmPYkagtgSayS5qVVWnGYeLGB/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>TV komode</h3>
+            <p>Elegantne forme za savremene dnevne boravke.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1WsdKpk-fHMPpcn5SSAIvnypSFFh3HmjX/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Plakari</h3>
+            <p>Praktična i luksuzna rešenja za odlaganje.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/18e_7bZb8WGOicOCK-svzv-jUM3d-Z7BK/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Trpezarijski stolovi</h3>
+            <p>Centar svakog elegantnog enterijera.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/14RGaCn1OSJ9GZr9f0-iaMM9GqJzckWP3/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Fotelje</h3>
+            <p>Komfor i estetika u savršenom balansu.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1Jxg1EUsgGYVOSfyPatyuhZ5f3p3hyUOf/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Cipelarnici</h3>
+            <p>Urednost prostora uz premium dizajn.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1le94UcYAGzvOHg8iqkNfnjKVAHC7npuF/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Komode</h3>
+            <p>Moderni detalji sa luksuznim karakterom.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+        <a class="catalog-card" href="https://drive.google.com/file/d/1sDrnjn6cYcSdLa2ahPpYFB12INQFj2a8/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div>
+            <h3>Kuhinje</h3>
+            <p>Premium kuhinje po meri savremenog života.</p>
+          </div>
+          <span>Otvori katalog</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <section class="contact-section" id="kontakt">
     <div class="contact-wrap">
