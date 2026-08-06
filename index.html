@@ -3463,6 +3463,18 @@
       }
     }
 
+    /* Anchors for top navigation: Katalozi / Galerija */
+    .scroll-anchor{
+      position:relative;
+      display:block;
+      width:1px;
+      height:1px;
+      margin-top:-1px;
+      visibility:hidden;
+      pointer-events:none;
+      scroll-margin-top:110px;
+    }
+
   </style>
 </style>
 </head>
@@ -4271,6 +4283,7 @@
 
 
         
+  <div id="katalozi" class="scroll-anchor" aria-hidden="true"></div>
   <section class="products-section" id="proizvodi">
     <div class="products-wrap">
       <div class="section-kicker">
@@ -4328,6 +4341,7 @@
         </article>
       </div>
 
+      <div id="galerija" class="scroll-anchor" aria-hidden="true"></div>
       <section class="product-gallery-block" id="garderoberi">
         <div class="product-gallery-header">
           <h3>Garderoberi</h3>
